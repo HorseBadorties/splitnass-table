@@ -1,18 +1,30 @@
-.example-container {
+.table-container {
     height: 400px;
     overflow: auto;
   }
-  table {
+
+  .table {
     width: 100%;
   }
 
-  mat-cell{
-    display:flex !important;
-    justify-content:center!important;
-    
+  .mat-cell {
+    border-right: 1px solid #e0e0e0;
+    text-align: center;
+    /* display:flex !important; */
+    /* justify-content: center!important; */
   }
   
-  mat-header-cell {
-    display:flex;
-    justify-content:center;
+  .mat-header-cell {
+    border-right: 1px solid #e0e0e0;
+    text-align: center;
+    /* display:flex; */
+    /* justify-content:center;       */
   }
+  
+  .mat-header-row {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: inherit;  
+  }
+ 

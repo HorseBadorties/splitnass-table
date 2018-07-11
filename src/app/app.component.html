@@ -2,51 +2,51 @@
 <br>
 <br>
   
-<div class="example-container mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+<div class="table-container mat-elevation-z8">
+  <table class="table" mat-table [dataSource]="dataSource">
 
     <ng-container matColumnDef="Runde">
-      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-      <mat-cell *matCellDef="let runde"> {{runde.nr}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let runde"> {{runde.nr}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Torsten">
-      <mat-header-cell *matHeaderCellDef> Torsten </mat-header-cell>
-      <mat-cell *matCellDef="let runde"> {{runde.torsten}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef> Torsten </th>
+      <td mat-cell *matCellDef="let runde"> {{runde.torsten}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Guido">
-      <mat-header-cell *matHeaderCellDef> Guido </mat-header-cell>
-      <mat-cell *matCellDef="let runde"> {{runde.guido}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef> Guido </th>
+      <td mat-cell *matCellDef="let runde"> {{runde.guido}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Thomas">
-      <mat-header-cell *matHeaderCellDef> Thomas </mat-header-cell>
-      <mat-cell *matCellDef="let runde"> {{runde.thomas}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef> Thomas </th>
+      <td mat-cell *matCellDef="let runde"> {{runde.thomas}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Claus">
-      <mat-header-cell *matHeaderCellDef> Claus </mat-header-cell>
-      <mat-cell *matCellDef="let runde"> {{runde.claus}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef> Claus </th>
+      <td mat-cell *matCellDef="let runde"> {{runde.claus}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Levent">
-      <mat-header-cell *matHeaderCellDef> Levent </mat-header-cell>
-      <mat-cell *matCellDef="let runde"> {{runde.levent}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef> Levent </th>
+      <td mat-cell *matCellDef="let runde"> {{runde.levent}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Böcke">
-      <mat-header-cell *matHeaderCellDef> Böcke </mat-header-cell>
-      <mat-cell *matCellDef="let runde"> {{runde.boecke}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef> Böcke </th>
+      <td mat-cell *matCellDef="let runde"> {{runde.boecke}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Punkte">
-      <mat-header-cell *matHeaderCellDef> Punkte </mat-header-cell>
-      <mat-cell *matCellDef="let runde"> {{runde.punkte}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef> Punkte </th>
+      <td mat-cell *matCellDef="let runde"> {{runde.punkte}} </td>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <tr class="header_row" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
 
