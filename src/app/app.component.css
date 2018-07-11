@@ -1,0 +1,18 @@
+.example-container {
+    height: 400px;
+    overflow: auto;
+  }
+  table {
+    width: 100%;
+  }
+
+  mat-cell{
+    display:flex !important;
+    justify-content:center!important;
+    
+  }
+  
+  mat-header-cell {
+    display:flex;
+    justify-content:center;
+  }
