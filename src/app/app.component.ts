@@ -33,7 +33,7 @@ const RUNDEN: Runde[] = [
 })
 export class AppComponent  {
   aktuelleRunde: number;
-  focused: Runde = RUNDEN[0];
+  focused: Runde;
   displayedColumns: string[] = ['Runde', 'Torsten', 'Guido', 'Thomas', 'Claus', 'Levent', 'Böcke', 'Punkte'];
   dataSource = RUNDEN;
   // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
