@@ -3,7 +3,7 @@
   flex-direction: column;  
   max-height: 200px;
   overflow: auto;
-  margin:10px;
+  margin:0px;
 }
 
 .mat-table {
@@ -36,6 +36,11 @@
 .mat-row {
   min-height:20px;
 }
+
+.mat-row-focused { 
+  background-color:rgba(0, 0, 0, 0.1);
+}
+
 
 
 

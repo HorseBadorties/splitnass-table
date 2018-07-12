@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ViewChildren, QueryList, ViewContainerRef} from '@angular/core';
 
 export interface Runde {
   nr: number;
@@ -32,13 +32,51 @@ const RUNDEN: Runde[] = [
   templateUrl: './app.component.html',
   styleUrls: [ './app.component.css' ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent  {
+  aktuelleRunde: number;
+  focused: Runde = RUNDEN[0];
   displayedColumns: string[] = ['Runde', 'Torsten', 'Guido', 'Thomas', 'Claus', 'Levent', 'Böcke', 'Punkte'];
   dataSource = RUNDEN;
+  // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
+  @ViewChildren('matrow', { read: ViewContainerRef }) rows: QueryList<ViewContainerRef>;
 
-  ngOnInit() { this.scrollBottom(); }
+  getNrByRunde(row: Runde): number {
+    return row.nr;
+  }
 
-  scrollBottom() {
-    // document.querySelector('mat-table').scrollBy(0, 10000);
+  getRundeByNr(nr: number): Runde {
+    console.log("getRundeByNr " + nr);
+    return RUNDEN.find(r => r.nr == nr);
+  }
+
+  rundeClicked(runde: Runde) {
+    console.log(`Runde ${runde.nr} clicked`)
+    this.focusRunde(runde);
+  }
+
+  focusRunde(runde: Runde) {      
+    this.focused = runde;
+  }
+  
+  recTrackBy(index: number, runde: Runde){
+    return runde.nr;
+  }
+  scrollToRunde(runde: Runde) {
+    console.log("scrolling to " + runde.nr);
+    this.showElement(runde.nr, 20);
+    this.focusRunde(runde);
+  }
+
+  showElement(index: number, height: number) {    
+    let indexstr = index.toString();
+    let row = this.rows.find(row => row.element.nativeElement.getAttribute('nr') === indexstr); 
+    if (row != null) {
+      let rect = row.element.nativeElement.getBoundingClientRect();
+      if ((rect.y <= 0) || ((rect.y+rect.height) > height)) {        
+        row.element.nativeElement.scrollIntoView(false, {behavior: 'smooth'});
+      }
+    } else {
+      console.log('not found');
+    }
   }
 }

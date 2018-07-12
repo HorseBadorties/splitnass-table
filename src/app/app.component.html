@@ -1,14 +1,17 @@
-<button mat-fab (click)="scrollBottom()">Click me!</button>
+<div>
+<button mat-button (click)="scrollToRunde(getRundeByNr(aktuelleRunde.value))">scroll to Runde</button> 
+    <input #aktuelleRunde type="number" matInput value="1">
+</div>
 <br>
 <br>
 
 
 <br>
 <div class="table-container mat-elevation-z8">
-  <mat-table [dataSource]="dataSource">
+  <mat-table #table [dataSource]="dataSource" [trackBy]="recTrackBy">
 
     <ng-container matColumnDef="Runde">
-     <mat-header-cell *matHeaderCellDef>No.</mat-header-cell>
+     <mat-header-cell *matHeaderCellDef>Runde</mat-header-cell>
      <mat-cell *matCellDef="let runde">{{runde.nr}}</mat-cell>
     </ng-container>
 
@@ -48,7 +51,13 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row  #matrow
+              *matRowDef="let runde; columns: displayedColumns;"
+              (click)="rundeClicked(runde)"
+              [attr.nr]="getNrByRunde(runde)"
+              [ngClass]="{'mat-row-focused': runde == focused }"
+    ></mat-row>
+    
   </mat-table>
 </div>
 
