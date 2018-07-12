@@ -1,5 +1,5 @@
 <div>
-<button mat-button (click)="scrollToRunde(getRundeByNr(aktuelleRunde.value))">scroll to Runde</button> 
+<button mat-button (click)="scrollToRunde(getRundeByNr(aktuelleRunde.value))">scroll to Runde Nr.</button> 
     <input #aktuelleRunde type="number" matInput value="1">
 </div>
 <br>
@@ -8,7 +8,7 @@
 
 <br>
 <div class="table-container mat-elevation-z8">
-  <mat-table #table [dataSource]="dataSource" [trackBy]="recTrackBy">
+  <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="Runde">
      <mat-header-cell *matHeaderCellDef>Runde</mat-header-cell>
