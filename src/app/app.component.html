@@ -1,3 +1,4 @@
+<button mat-button (click)="addRunde()">append Runde</button> 
 <div>
 <button mat-button (click)="scrollToRunde(getRundeByNr(aktuelleRunde.value))">scroll to Runde Nr.</button> 
     <input #aktuelleRunde type="number" matInput value="1">
@@ -14,7 +15,7 @@
      <mat-header-cell *matHeaderCellDef>Runde</mat-header-cell>
      <mat-cell *matCellDef="let runde">{{runde.nr}}</mat-cell>
     </ng-container>
-
+    
     <ng-container matColumnDef="Torsten">
      <mat-header-cell *matHeaderCellDef>Torsten</mat-header-cell>
      <mat-cell *matCellDef="let runde">{{runde.torsten}}</mat-cell>
@@ -42,12 +43,12 @@
 
     <ng-container matColumnDef="Böcke">
      <mat-header-cell *matHeaderCellDef>Böcke</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{runde.boecke}}</mat-cell>
+     <mat-cell *matCellDef="let runde">{{"|".repeat(runde.boecke)}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="Punkte">
      <mat-header-cell *matHeaderCellDef>Punkte</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{runde.punkte}}</mat-cell>
+     <mat-cell *matCellDef="let runde">{{runde.punkte == 0 ? "" : runde.punkte}}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
