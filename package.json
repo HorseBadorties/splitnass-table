@@ -1,6 +1,9 @@
 {
   "name": "splitnass-table",
   "version": "0.0.0",
+  "engines": {
+    "node": "8.11.2"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -46,6 +49,3 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.3.0",
     "ts-node": "~5.0.1",
-    "tslint": "~5.9.1"
-  }
-}
