@@ -1,12 +1,8 @@
-<button mat-button (click)="addRunde()">append Runde</button> 
+<button mat-raised-button (click)="addRunde()">append Runde</button> 
 <div>
-<button mat-button (click)="scrollToRunde(getRundeByNr(aktuelleRunde.value))">scroll to Runde Nr.</button> 
+<button mat-raised-button (click)="scrollToRunde(getRundeByNr(aktuelleRunde.value))">scroll to Runde Nr.</button> 
     <input #aktuelleRunde type="number" matInput value="1">
 </div>
-<br>
-<br>
-
-
 <br>
 <div class="table-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource">
