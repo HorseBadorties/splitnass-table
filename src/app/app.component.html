@@ -1,7 +1,7 @@
 <button mat-raised-button color="primary" (click)="addRunde()">Runde anhängen</button> 
 <div>
-<button mat-raised-button  color="primary"(click)="scrollToRunde(getRundeByNr(aktuelleRunde.value))">Scroll zu Runde Nr.</button> 
-    <input #aktuelleRunde type="number" matInput value="1">
+<button mat-raised-button  color="primary"(click)="scrollToRunde(getRundeByNr(inputAktuelleRunde.value))">Scroll zu Runde Nr.</button> 
+    <input #inputAktuelleRunde type="number" matInput value="1">
 </div>
 <br>
 <div class="table-container mat-elevation-z8">
@@ -56,6 +56,35 @@
     ></mat-row>
     
   </mat-table>
+</div>
+<br>
+<div>
+  <p-spinner #spinner size="5" (change)="scrollToRunde(getRundeByNr(spinner.value))"></p-spinner>
+</div>
+<br>
+<div class="table-container mat-elevation-z8">
+<p-table [columns]="displayedColumns" [value]="runden">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns">
+                {{col}}
+            </th>
+        </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-runde>
+        <tr [ngClass]="p-table-row">
+            <td [ngClass]="p-table-row"> {{runde.nr}} </td>
+            <td [ngClass]="p-table-row"> {{runde.torsten}} </td>
+            <td [ngClass]="p-table-row"> {{runde.guido}} </td>
+            <td [ngClass]="p-table-row"> {{runde.thomas}} </td>
+            <td [ngClass]="p-table-row"> {{runde.claus}} </td>
+            <td [ngClass]="p-table-row"> {{runde.levent}} </td>
+            <td [ngClass]="p-table-row"> {{"|".repeat(runde.boecke)}} </td>
+            <td [ngClass]="p-table-row"> {{runde.punkte == 0 ? "" : runde.punkte}} </td>
+        </tr>
+    </ng-template>
+</p-table>
 </div>
 
 

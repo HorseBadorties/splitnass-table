@@ -40,6 +40,10 @@ import {
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 
+import {ButtonModule} from 'primeng/button';
+import {SpinnerModule} from 'primeng/spinner';
+import {TableModule} from 'primeng/table';
+
 @NgModule({
   exports: [
     CdkTableModule,
@@ -74,6 +78,10 @@ import {CdkTableModule} from '@angular/cdk/table';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
+
+    TableModule,
+    ButtonModule,
+    SpinnerModule
   ]
 })
 export class DemoMaterialModule {}
