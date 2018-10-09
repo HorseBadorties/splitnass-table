@@ -5,8 +5,8 @@ export class Runde {
     claus = '';
     thomas = '';
     levent = '';
-    boecke = '';
-    punkte = '';
+    boecke = 0;
+    punkte = 0;
 
     constructor(nr: number) {
       this.nr = nr;
