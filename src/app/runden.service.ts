@@ -10,8 +10,16 @@ export class RundenService {
   
   constructor() { }
   
-  getColumnNames(): Observable<String[]> {
-    return of(['Runde', 'Torsten', 'Guido', 'Thomas', 'Claus', 'Levent', 'Böcke', 'Punkte']);
+  getColumnNames(): Observable<Column[]> {
+    return of([
+      new Column('nr', 'Runde', '10%'), 
+      new Column('torsten', 'Torsten', '14%'), 
+      new Column('guido', 'Guido', '14%'), 
+      new Column('thomas', 'Thomas', '14%'),
+      new Column('claus', 'Claus', '14%'), 
+      new Column('levent', 'Levent', '14%'), 
+      new Column('boeckeAsString', 'Böcke', '10%'), 
+      new Column('punkteAsString', 'Punkte', '10%')]);
   }
   
   getRunden(): Observable<Runde[]> {
@@ -26,19 +34,23 @@ export class RundenService {
 
 }
 
+export class Column {
+  constructor(public field: String, public header: String, public width: String) {};
+}
+
 const RUNDEN: Runde[] = [
-  {nr: 14, torsten: '*',  guido: '*',   claus: '*',   thomas: '-',    levent: '*',    boecke: 3,  punkte: 16},
-  {nr: 15, torsten: '*',  guido: '156', claus: '*',   thomas: '120',  levent: '-',    boecke: 2,   punkte: 32},
-  {nr: 16, torsten: '-',  guido: '168', claus: '*',   thomas: '132',  levent: '*',    boecke: 2,   punkte: 12},
-  {nr: 17, torsten: '*',  guido: '-',   claus: '141', thomas: '144',  levent: '*',    boecke: 2,   punkte: 12},
-  {nr: 18, torsten: '*',  guido: '174', claus: '-',   thomas: '*',    levent: '*',    boecke: 1,   punkte: 6},
-  {nr: 19, torsten: '*',  guido: '178', claus: '-',   thomas: '*',    levent: '109',  boecke: 1,   punkte: 4},
-  {nr: 20, torsten: '62', guido: '*',   claus: '149', thomas: '-',    levent: '*',    boecke: 1,   punkte: 8},
-  {nr: 21, torsten: '*',  guido: '*',   claus: '161', thomas: '156',  levent: '-',    boecke: 1,   punkte: 12},
-  {nr: 22, torsten: '-',  guido: '*',   claus: '*',   thomas: '168',  levent: '121',  boecke: 1,   punkte: 12},
-  {nr: 23, torsten: '68', guido: '-',   claus: '167', thomas: '*',    levent: '*',    boecke: 1,   punkte: 6},
-  {nr: 24, torsten: '*',  guido: '180', claus: '-',   thomas: '170',  levent: '*',    boecke: 0,   punkte: 2},
-  {nr: 25, torsten: '*',  guido: '198', claus: '185', thomas: '-',    levent: '*',    boecke: 1,   punkte: 18},
+  new Runde(14, '*', '*', '*', '-', '*', 3, 16),
+  new Runde(15, '*', '156', '*', '121', '-', 2, 32),
+  new Runde(16, '-',  '168', '*', '132',  '*',  2, 12),
+  new Runde(17, '*',  '-', '141', '144',  '*',  2, 12),
+  new Runde(18, '*',  '174', '-', '*',  '*',  1, 6),
+  new Runde(19, '*',  '178', '-', '*',  '109',  1, 4),
+  new Runde(20, '62', '*', '149', '-',  '*',  1, 8),
+  new Runde(21, '*',  '*', '161', '156',  '-',  1, 12),
+  new Runde(22, '-',  '*', '*', '168',  '121',  1, 12),
+  new Runde(23, '68', '-', '167', '*',  '*',  1, 6),
+  new Runde(24, '*',  '180', '-', '170',  '*',  0, 2),
+  new Runde(25, '*',  '198', '185', '-',  '*',  1, 18)
 ];
 
 

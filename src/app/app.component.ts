@@ -1,7 +1,7 @@
 import {Component, ViewChildren, QueryList, ElementRef, OnInit} from '@angular/core';
 
 import { Runde } from './model/Runde';
-import { RundenService } from './runden.service';
+import { RundenService, Column } from './runden.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ import { RundenService } from './runden.service';
 export class AppComponent implements OnInit {
   aktuelleRunde: number;
   selectedRunde: Runde;
-  displayedColumns: String[];
+  displayedColumns: Column[];
   runden: Runde[];
   // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
   @ViewChildren('primerow', { read: ElementRef }) rowsPrime: QueryList<ElementRef>;
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
   addRunde() {
     let newRunde: Runde;
     this.rundenService.addRunde().subscribe(r => newRunde = r);
-    this.runden = this.runden.concat(newRunde);  // re-assigning data triggers the mat-table update
+    this.runden = this.runden.concat(newRunde);  // re-assigning data triggers table update
     this.scrollToRunde(this.getRundeByNr(newRunde.nr - 1));
   }
 
