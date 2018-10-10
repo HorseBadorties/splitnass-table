@@ -1,87 +1,38 @@
-<button mat-raised-button color="primary" (click)="addRunde()">Runde anhängen</button> 
-<div>
-<button mat-raised-button  color="primary"(click)="scrollToRunde(getRundeByNr(inputAktuelleRunde.value))">Scroll zu Runde Nr.</button> 
-    <input #inputAktuelleRunde type="number" matInput value="1">
-</div>
-<br>
-<div class="table-container mat-elevation-z8">
-  <mat-table #table [dataSource]="dataSource">
-
-    <ng-container matColumnDef="Runde">
-     <mat-header-cell *matHeaderCellDef>Runde</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{runde.nr}}</mat-cell>
-    </ng-container>
-    
-    <ng-container matColumnDef="Torsten">
-     <mat-header-cell *matHeaderCellDef>Torsten</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{runde.torsten}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="Guido">
-     <mat-header-cell *matHeaderCellDef>Guido</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{runde.guido}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="Thomas">
-     <mat-header-cell *matHeaderCellDef>Thomas</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{runde.thomas}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="Claus">
-     <mat-header-cell *matHeaderCellDef>Claus</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{runde.claus}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="Levent">
-     <mat-header-cell *matHeaderCellDef>Levent</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{runde.levent}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="Böcke">
-     <mat-header-cell *matHeaderCellDef>Böcke</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{"|".repeat(runde.boecke)}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="Punkte">
-     <mat-header-cell *matHeaderCellDef>Punkte</mat-header-cell>
-     <mat-cell *matCellDef="let runde">{{runde.punkte == 0 ? "" : runde.punkte}}</mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row  #matrow
-              *matRowDef="let runde; columns: displayedColumns;"
-              (click)="rundeClicked(runde)"
-              [attr.nr]="getNrByRunde(runde)"
-              [ngClass]="{'mat-row-focused': runde == focused }"
-    ></mat-row>
-    
-  </mat-table>
-</div>
-<br>
 <div>
   <p-spinner #spinner size="5" (change)="scrollToRunde(getRundeByNr(spinner.value))"></p-spinner>
 </div>
+<div>
+    <p-button icon="pi pi-plus" (click)="addRunde()"></p-button>
+</div>
 <br>
-<div class="table-container mat-elevation-z8">
-<p-table [columns]="displayedColumns" [value]="runden">
+<div class="mat-elevation-z8">
+<p-table [columns]="displayedColumns" 
+    [value]="runden" 
+    [scrollable]="true" 
+    scrollHeight="200px"
+    selectionMode="single" 
+    [(selection)]="selectedRunde">
     <ng-template pTemplate="header" let-columns>
-        <tr>
+        <tr class="p-table-row">
             <th *ngFor="let col of columns">
                 {{col}}
             </th>
         </tr>
     </ng-template>
     
-    <ng-template pTemplate="body" let-runde>
-        <tr [ngClass]="p-table-row">
-            <td [ngClass]="p-table-row"> {{runde.nr}} </td>
-            <td [ngClass]="p-table-row"> {{runde.torsten}} </td>
-            <td [ngClass]="p-table-row"> {{runde.guido}} </td>
-            <td [ngClass]="p-table-row"> {{runde.thomas}} </td>
-            <td [ngClass]="p-table-row"> {{runde.claus}} </td>
-            <td [ngClass]="p-table-row"> {{runde.levent}} </td>
-            <td [ngClass]="p-table-row"> {{"|".repeat(runde.boecke)}} </td>
-            <td [ngClass]="p-table-row"> {{runde.punkte == 0 ? "" : runde.punkte}} </td>
+    <ng-template pTemplate="body" let-runde >
+        <tr #primerow
+            class="p-table-row"                          
+            [pSelectableRow]="runde"
+            [attr.nr]="getNrByRunde(runde)">
+            <td > {{runde.nr}} </td>
+            <td > {{runde.torsten}} </td>
+            <td > {{runde.guido}} </td>
+            <td > {{runde.thomas}} </td>
+            <td > {{runde.claus}} </td>
+            <td > {{runde.levent}} </td>
+            <td > {{"|".repeat(runde.boecke)}} </td>
+            <td > {{runde.punkte == 0 ? "" : runde.punkte}} </td>
         </tr>
     </ng-template>
 </p-table>

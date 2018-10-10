@@ -1,4 +1,4 @@
-import {Component, ViewChildren, QueryList, ViewContainerRef, OnInit} from '@angular/core';
+import {Component, ViewChildren, QueryList, ViewContainerRef, ElementRef, OnInit} from '@angular/core';
 
 import { Runde } from './model/Runde';
 import { RundenService } from './runden.service';
@@ -11,12 +11,13 @@ import { MatTableDataSource } from '@angular/material';
 })
 export class AppComponent implements OnInit {
   aktuelleRunde: number;
-  focused: Runde;
+  selectedRunde: Runde;
   displayedColumns: String[];
   runden: Runde[];
   dataSource: MatTableDataSource<Runde>;
   // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
-  @ViewChildren('matrow', { read: ViewContainerRef }) rows: QueryList<ViewContainerRef>;
+  @ViewChildren('matrow', { read: ElementRef }) rows: QueryList<ElementRef>;
+  @ViewChildren('primerow', { read: ElementRef }) rowsPrime: QueryList<ElementRef>;
 
   constructor(public rundenService: RundenService) {}
 
@@ -50,25 +51,25 @@ export class AppComponent implements OnInit {
   }
 
   focusRunde(runde: Runde) {
-    this.focused = runde;
+    this.selectedRunde = runde;
   }
 
   scrollToRunde(runde: Runde) {
     if (runde != null) {
-      this.scrollToNr(runde.nr.toString());
       this.focusRunde(runde);
-    } else {
-      console.log('Nothing to scroll to');
-    }
+      this.scrollToNr(runde.nr.toString());
+    } 
   }
 
   scrollToNr(nr: string) {
-    const row = this.rows.find(r => r.element.nativeElement.getAttribute('nr') === nr); // [attr.nr]="getNrByRunde(runde)"
+    this.scrollTo(this.rows.find(r => r.nativeElement.getAttribute('nr') === nr));
+    this.scrollTo(this.rowsPrime.find(r => r.nativeElement.getAttribute('nr') === nr));
+  }
+
+  private scrollTo(row: ElementRef) {
     if (row != null) {
-        row.element.nativeElement.scrollIntoView(false, {behavior: 'smooth'});
-        console.log('scrolled to ' + nr);
-    } else {
-      console.log('failed to scroll to ' + nr);
+      row.nativeElement.scrollIntoView(false, {behavior: 'smooth'});
     }
   }
+
 }
