@@ -1,0 +1,18 @@
+<div>
+  <p-button icon="pi pi-bars" routerLink="/rundenliste"></p-button>
+</div>
+
+<p-fieldset legend="Runde Nr. {{aktuelleRunde}} von {{gesamtRunden}} ({{statusDerRunde}})">
+  <!-- <p-chips [(ngModel)]="rundeninfo" disabled="true"></p-chips> -->
+  <!-- <p-chips [(ngModel)]="punktestand" disabled="true"></p-chips> -->
+  <span *ngFor="let info of rundeninfo"  class="info"> {{info}} </span> 
+  <div  class="info">{{punktestand}}</div> 
+</p-fieldset>
+
+<p-fieldset legend="Angesagt">
+  <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+</p-fieldset>
+
+<p-fieldset legend="Gespielt">
+  
+</p-fieldset>

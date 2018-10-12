@@ -12,14 +12,14 @@ export class RundenService {
   
   getColumnNames(): Observable<Column[]> {
     return of([
-      new Column('nr', 'Runde', '10%'), 
-      new Column('torsten', 'Torsten', '14%'), 
-      new Column('guido', 'Guido', '14%'), 
-      new Column('thomas', 'Thomas', '14%'),
-      new Column('claus', 'Claus', '14%'), 
-      new Column('levent', 'Levent', '14%'), 
-      new Column('boeckeAsString', 'Böcke', '10%'), 
-      new Column('punkteAsString', 'Punkte', '10%')]);
+      new Column('nr', 'Runde', '100%'), 
+      new Column('torsten', 'Torsten', '100%'), 
+      new Column('guido', 'Guido', '100%'), 
+      new Column('thomas', 'Thomas', '100%'),
+      new Column('claus', 'Claus', '100%'), 
+      new Column('levent', 'Levent', '100%'), 
+      new Column('boeckeAsString', 'Böcke', '100%'), 
+      new Column('punkteAsString', 'Punkte', '100%')]);
   }
   
   getRunden(): Observable<Runde[]> {
