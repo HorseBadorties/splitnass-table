@@ -1,6 +1,6 @@
 import { Component, ViewChildren, QueryList, ElementRef, OnInit } from '@angular/core';
 
-import { Runde } from '../model/runde';
+import { Runde } from '../model/runde2';
 import { RundenService, Column } from '../services/runden.service';
 
 @Component({
