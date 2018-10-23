@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Runde } from '../model/runde2';
+import { Runde } from '../model/runde';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
 
