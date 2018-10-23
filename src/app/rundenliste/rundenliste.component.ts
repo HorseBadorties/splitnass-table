@@ -1,7 +1,7 @@
 import { Component, ViewChildren, QueryList, ElementRef, OnInit } from '@angular/core';
 
-import { Runde } from '../model/Runde';
-import { RundenService, Column } from '../runden.service';
+import { Runde } from '../model/runde';
+import { RundenService, Column } from '../services/runden.service';
 
 @Component({
   selector: 'app-rundenliste',
@@ -20,17 +20,18 @@ export class RundenlisteComponent implements OnInit {
   constructor(public rundenService: RundenService) {}
 
   ngOnInit() {
-    this.rundenService.getRunden().subscribe(_runden => {
-      this.runden = _runden;
-    });
     this.rundenService.getColumnNames().subscribe(columns => this.displayedColumns = columns);
+    this.rundenService.rundenSubject.subscribe(runden => this.runden = runden);
+  }
+
+  getIndex(index: number, item: Runde) {
+    return item.nr;
   }
 
   addRunde() {
-    let newRunde: Runde;
-    this.rundenService.addRunde().subscribe(r => newRunde = r);
-    this.runden = this.runden.concat(newRunde);  // re-assigning data triggers table update
-    this.scrollToRunde(this.getRundeByNr(newRunde.nr - 1));
+    // this.rundenService.addRunde();
+    this.runden.push(new Runde(this.runden[this.runden.length - 1].nr + 1));
+    this.runden[this.runden.length - 4].levent = '4711';
   }
 
   getNrByRunde(row: Runde): number {
@@ -55,7 +56,7 @@ export class RundenlisteComponent implements OnInit {
     if (runde != null) {
       this.focusRunde(runde);
       this.scrollToNr(runde.nr.toString());
-    } 
+    }
   }
 
   scrollToNr(nr: string) {

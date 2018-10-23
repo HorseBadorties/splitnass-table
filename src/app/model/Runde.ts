@@ -1,6 +1,7 @@
 export class Runde {
  
-  constructor(public nr: number,
+  constructor(
+    public nr: number,
     public torsten = '',
     public guido = '',
     public claus = '',
@@ -15,7 +16,9 @@ export class Runde {
   }
 
   get boeckeAsString() {
-    return "|".repeat(this.boecke);
+    return '|'.repeat(this.boecke);
   }
 
 }
+
+

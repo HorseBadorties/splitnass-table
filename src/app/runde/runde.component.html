@@ -11,7 +11,12 @@
 
 <p-fieldset legend="Angesagt">
   <div>
-    <!-- <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox> -->
+    <p-dropdown [options]="moeglicheReAnsagen" [(ngModel)]="reAngesagt"></p-dropdown>
+    <p-checkbox [(ngModel)]="reVonVorneherein" label="von vorneherein" binary="true"></p-checkbox>
+  </div>
+  <div>
+    <p-dropdown [options]="moeglicheKontraAnsagen" [(ngModel)]="kontraAngesagt"></p-dropdown>
+    <p-checkbox [(ngModel)]="kontraVonVorneherein" label="von vorneherein" binary="true"></p-checkbox>
   </div>
 </p-fieldset>
 

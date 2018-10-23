@@ -6,7 +6,8 @@ import { RundeComponent } from './runde/runde.component';
 
 const routes: Routes = [
   { path: 'rundenliste', component: RundenlisteComponent },
-  { path: 'runde', component: RundeComponent }
+  { path: 'runde', component: RundeComponent },
+  { path: '**', component: RundenlisteComponent }
 ];
 
 @NgModule({

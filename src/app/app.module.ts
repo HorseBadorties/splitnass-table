@@ -13,7 +13,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { AppComponent } from './app.component';
 import { RundeComponent } from './runde/runde.component';
 import { RundenlisteComponent } from './rundenliste/rundenliste.component';
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
