@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, ElementRef, OnInit, DoCheck, OnChanges, OnDestroy } from "@angular/core";
+import { Component, ViewChildren, QueryList, ElementRef, OnInit, AfterViewInit } from "@angular/core";
 
 import { Spieltag } from "../model/spieltag";
 import { Runde } from "../model/runde";
@@ -9,7 +9,7 @@ import { SpieltagService } from "../services/spieltag.service";
   templateUrl: "./rundenliste.component.html",
   styleUrls: ["./rundenliste.component.css"]
 })
-export class RundenlisteComponent implements OnInit {
+export class RundenlisteComponent implements OnInit, AfterViewInit {
 
   spieltag: Spieltag;
   selectedRunde: Runde;
@@ -23,23 +23,27 @@ export class RundenlisteComponent implements OnInit {
     this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => {
       this.spieltag = spieltag;
       this.calcDisplayedColumns();
+      this.selectedRunde = spieltag.aktuelleRunde;
     });
-
   }
+
+  ngAfterViewInit() {
+    this.scrollToRunde(this.spieltag.aktuelleRunde);
+   }
 
   private calcDisplayedColumns() {
     const result = [new Column("nr", "Runde", "60%")];
     this.spieltag.spieler.forEach(spieler => result.push(new Column(spieler.id.toString(), spieler.name, "100%")));
-    result.push(new Column("boeckeAsString", "Böcke", "60%"));
-    result.push(new Column("ergebnisAsString", "Punkte", "60%"));
+    result.push(new Column("boecke", "Böcke", "60%"));
+    result.push(new Column("ergebnis", "Punkte", "60%"));
     this.displayedColumns = result;
   }
 
   getValueFor(runde: Runde, field: string) {
     switch (field) {
       case "nr": return runde.nr;
-      case "boeckeAsString": return "|".repeat(runde.boecke);
-      case "ergebnisAsString": return runde.ergebnis > 0 ? runde.ergebnis.toString() : "";
+      case "boecke": return "|".repeat(runde.boecke);
+      case "ergebnis": return runde.ergebnis > 0 ? runde.ergebnis.toString() : "";
       default: {
         const spieler = this.spieltag.spieler.find(s => s.id === Number.parseInt(field));
         if (runde.isAktuelleRunde()) {
@@ -68,38 +72,24 @@ export class RundenlisteComponent implements OnInit {
     return item.nr;
   }
 
-  addRunde() {
-    // this.runden.push(new Runde(this.runden[this.runden.length - 1].nr + 1));
+  buttonClicked() {
     this.selectedRunde.ergebnis = 32;
-    // const i = this.runden.indexOf(this.selectedRunde);
-    // this.selectedRunde = this.runden[i + 1];
-  }
-
-  getNrByRunde(row: Runde): number {
-    return row.nr;
-  }
-
-  getRundeByNr(nr: number): Runde {
-    console.log("getRundeByNr " + nr);
-    return this.spieltag.runden.find(r => r.nr == nr);
-  }
-
-  rundeClicked(runde: Runde) {
-    console.log(`Runde ${runde.nr} clicked`);
-  }
-
-  focusRunde(runde: Runde) {
-    this.selectedRunde = runde;
+    this.selectedRunde.boecke = 2;
+    const spieler = this.spieltag.spieler.slice(0, 4);
+    this.selectedRunde.spieler = spieler;
+    this.selectedRunde.gewinner = spieler.slice(0, 2);
   }
 
   scrollToRunde(runde: Runde) {
-    if (runde != null) {
-      this.focusRunde(runde);
+    if (runde) {
+      if (this.selectedRunde !== runde) {
+        this.selectedRunde = runde;
+      }
       this.scrollToNr(runde.nr.toString());
     }
   }
 
-  scrollToNr(nr: string) {
+  private scrollToNr(nr: string) {
     this.scrollTo(this.rowsPrime.find(r => r.nativeElement.getAttribute("nr") === nr));
   }
 
@@ -108,7 +98,6 @@ export class RundenlisteComponent implements OnInit {
       row.nativeElement.scrollIntoView(false, {behavior: "smooth"});
     }
   }
-
 
 }
 

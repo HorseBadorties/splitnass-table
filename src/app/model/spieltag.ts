@@ -11,9 +11,9 @@ export class Spieltag {
         public aktuelleRunde?: Runde,
         public spieler: Array<Spieler> = []) {}
 
-  start(anzahlRunden: number, _spieler: Array<Spieler>, geber: Spieler) {
+  start(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler) {
     this.beginn = new Date();
-    this.spieler = _spieler;
+    this.spieler = spieler;
     this.anzahlRunden = anzahlRunden;
     for (let i = 0; i < this.anzahlRunden; i++) {
       this.runden.push(new Runde(i + 1));
@@ -34,13 +34,16 @@ export class Spieltag {
     return result;
   }
 
-  private getNaechstenSpieler(_spieler: Spieler) {
-    const i = this.spieler.indexOf(_spieler);
+  private getNaechstenSpieler(spieler: Spieler) {
+    const i = this.spieler.indexOf(spieler);
     const next = i === this.spieler.length - 1 ? this.spieler[0] : this.spieler[i + 1];
     return next.isAktiv ? next : this.getNaechstenSpieler(next);
   }
 
   public getPunktestand(runde: Runde, spieler: Spieler) {
-    return 0;
+    return this.runden.slice(0, this.runden.indexOf(runde) + 1)
+      .filter(r => r.gewinner.includes(spieler))
+      .map(r => r.ergebnis)
+      .reduce((acc, curr) => acc + curr, 0);
   }
 }
