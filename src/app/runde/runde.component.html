@@ -1,15 +1,26 @@
-<p-toast></p-toast>
+<p-toast position="top-center"></p-toast>
 
-<p-confirmDialog header="Gespaltener Arsch?" icon="pi pi-exclamation-triangle" width="425"></p-confirmDialog>
+<p-confirmDialog icon="pi pi-exclamation-triangle" ></p-confirmDialog>
+
+<p-dialog header="Gewinner der Runde auswählen" [(visible)]="displayGewinnerDialog" 
+  [modal]="true" [responsive]="true">
+       
+  <p-listbox [options]="aktuelleRunde.spieler" [(ngModel)]="aktuelleRunde.gewinner" 
+    multiple="multiple" checkbox="checkbox" optionLabel="name" [showToggleAll]="false"></p-listbox>
+      <p-footer>
+          <button type="button" pButton icon="pi pi-check" (click)="berechneErgebnis()" label="Ok"></button>
+          <button type="button" pButton icon="pi pi-close" (click)="displayGewinnerDialog=false" label="Cancel" class="ui-button-secondary"></button>
+      </p-footer>
+</p-dialog>
 
 <div>
   <p-button icon="pi pi-bars" routerLink="/rundenliste"></p-button>
-  <p-button icon="pi pi-eye" (click)="berechneErgebnis()"></p-button>
+  <p-button icon="pi pi-eye" (click)="rundeAbrechnen()"></p-button>
 </div>
 <br>
 <div class="elevation">
   <p-fieldset legend="Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})">
-    <span *ngFor="let info of getRundenInfo()"  class="info"> {{info}} </span> 
+    <span *ngFor="let info of getRundenInfo()"  class="info"><i class="pi pi-caret-right"></i>{{info}} </span> 
     <div  class="info">{{getPunktestand()}}</div> 
   </p-fieldset>
 

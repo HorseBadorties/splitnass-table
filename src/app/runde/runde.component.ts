@@ -4,6 +4,7 @@ import { MessageService, ConfirmationService } from "primeng/api";
 import { Runde, Gespielt, Ansage } from "../model/runde";
 import { Spieltag } from "../model/spieltag";
 import { Solo } from "../model/solo";
+import { Spieler } from "../model/spieler";
 
 @Component({
   selector: "app-runde",
@@ -14,6 +15,8 @@ import { Solo } from "../model/solo";
 export class RundeComponent implements OnInit {
   spieltag: Spieltag;
   aktuelleRunde: Runde;
+  displayGewinnerDialog = false;
+  selectedGewinner: Spieler[];
 
 
   constructor(
@@ -21,24 +24,30 @@ export class RundeComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService) { }
 
-  berechneErgebnis() {
+  rundeAbrechnen() {
     if (this.aktuelleRunde.gespielt === Gespielt.GespaltenerArsch) {
       this.confirmGespaltenerArsch();
     } else {
-      this.doBerechneErgebnis();
+      this.pickGewinner();
     }
   }
 
-  private doBerechneErgebnis() {
+  pickGewinner() {
+    this.displayGewinnerDialog = true;
+  }
+
+  berechneErgebnis() {
+    this.displayGewinnerDialog = false;
     this.aktuelleRunde.berechneErgebnis();
     this.messageService.add({severity: "info", summary: "Ergebnis der Runde", detail: this.aktuelleRunde.ergebnis.toString()});
   }
 
   confirmGespaltenerArsch() {
     this.confirmationService.confirm({
+      header: "Gespaltener Arsch?",
       message: "Really?",
       accept: () => {
-        this.doBerechneErgebnis();
+        this.pickGewinner();
       }
     });
   }

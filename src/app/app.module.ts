@@ -11,6 +11,8 @@ import { DropdownModule } from "primeng/dropdown";
 import { CheckboxModule } from "primeng/checkbox";
 import { ToastModule } from "primeng/toast";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { DialogModule } from "primeng/dialog";
+import { ListboxModule } from "primeng/listbox";
 
 import { AppComponent } from "./app.component";
 import { RundeComponent } from "./runde/runde.component";
@@ -37,6 +39,8 @@ import { AppRoutingModule } from "./app-routing.module";
     CheckboxModule,
     ToastModule,
     ConfirmDialogModule,
+    DialogModule,
+    ListboxModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]
