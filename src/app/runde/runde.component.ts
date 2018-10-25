@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { SpieltagService } from "../services/spieltag.service";
-import { MessageService, ConfirmationService } from "primeng/api";
+import { MessageService, ConfirmationService, SelectItem } from "primeng/api";
 import { Runde, Gespielt, Ansage } from "../model/runde";
 import { Spieltag } from "../model/spieltag";
 import { Solo } from "../model/solo";
@@ -17,12 +17,21 @@ export class RundeComponent implements OnInit {
   aktuelleRunde: Runde;
   displayGewinnerDialog = false;
   selectedGewinner: Spieler[];
+  moeglicheReAnsagen: SelectItem[];
+  moeglicheKontraAnsagen: SelectItem[];
+  moeglicheErgebnisse: SelectItem[];
+  moeglicheSoli: Solo[];
 
 
   constructor(
     public spieltagService: SpieltagService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService) {
+      this.moeglicheErgebnisse = this.getMoeglicheErgebnisse();
+      this.moeglicheReAnsagen = this.getMoeglicheAnsagen(true);
+      this.moeglicheKontraAnsagen = this.getMoeglicheAnsagen(false);
+      this.moeglicheSoli = this.getMoeglicheSoli();
+     }
 
   isNochNichtGespielteRunde() {
     return !this.aktuelleRunde.isGespielteRunde() && !this.aktuelleRunde.isAktuelleRunde();
@@ -56,34 +65,34 @@ export class RundeComponent implements OnInit {
     });
   }
 
-  getMoeglicheAnsagen(fuerRe: boolean) {
+  private getMoeglicheAnsagen(fuerRe: boolean): SelectItem[] {
     return [
-      {label: "Keine Ansagen", value: Ansage.KeineAnsage.valueOf()},
-      {label: `${fuerRe ? "Re" : "Kontra"}`, value: Ansage.ReOderKontra.valueOf()},
-      {label: "keine 9", value: Ansage.Keine9.valueOf()},
-      {label: "keine 6", value: Ansage.Keine6.valueOf()},
-      {label: "keine 3", value: Ansage.Keine3.valueOf()},
-      {label: "schwarz", value: Ansage.Schwarz.valueOf()}
+      {label: "Keine Ansagen", value: Ansage.KeineAnsage},
+      {label: `${fuerRe ? "Re" : "Kontra"}`, value: Ansage.ReOderKontra},
+      {label: "keine 9", value: Ansage.Keine9},
+      {label: "keine 6", value: Ansage.Keine6},
+      {label: "keine 3", value: Ansage.Keine3},
+      {label: "schwarz", value: Ansage.Schwarz}
     ];
   }
 
-  getMoeglicheErgebnisse() {
+  private getMoeglicheErgebnisse(): SelectItem[] {
     return [
-      {label: "Gespaltener Arsch", value: Gespielt.GespaltenerArsch.valueOf()},
-      {label: "Re gewinnt", value: Gespielt.Re.valueOf()},
-      {label: "Re gewinnt keine 9", value: Gespielt.ReKeine9.valueOf()},
-      {label: "Re gewinnt keine 6", value: Gespielt.ReKeine6.valueOf()},
-      {label: "Re gewinnt keine 3", value: Gespielt.ReKeine3.valueOf()},
-      {label: "Re gewinnt schwarz", value: Gespielt.ReSchwarz.valueOf()},
-      {label: "Kontra gewinnt", value: Gespielt.Kontra.valueOf()},
-      {label: "Kontra gewinnt keine 9", value: Gespielt.KontraKeine9.valueOf()},
-      {label: "Kontra gewinnt keine 6", value: Gespielt.KontraKeine6.valueOf()},
-      {label: "Kontra gewinnt keine 3", value: Gespielt.KontraKeine3.valueOf()},
-      {label: "Kontra gewinnt schwarz", value: Gespielt.KontraSchwarz.valueOf()}
+      {label: "Gespaltener Arsch", value: Gespielt.GespaltenerArsch},
+      {label: "Re gewinnt", value: Gespielt.Re},
+      {label: "Re gewinnt keine 9", value: Gespielt.ReKeine9},
+      {label: "Re gewinnt keine 6", value: Gespielt.ReKeine6},
+      {label: "Re gewinnt keine 3", value: Gespielt.ReKeine3},
+      {label: "Re gewinnt schwarz", value: Gespielt.ReSchwarz},
+      {label: "Kontra gewinnt", value: Gespielt.Kontra},
+      {label: "Kontra gewinnt keine 9", value: Gespielt.KontraKeine9},
+      {label: "Kontra gewinnt keine 6", value: Gespielt.KontraKeine6},
+      {label: "Kontra gewinnt keine 3", value: Gespielt.KontraKeine3},
+      {label: "Kontra gewinnt schwarz", value: Gespielt.KontraSchwarz}
     ];
   }
 
-  getMoeglicheSoli() {
+  private getMoeglicheSoli() {
     return [
       Solo.KEIN_SOLO,
       Solo.FLEISCHLOS,

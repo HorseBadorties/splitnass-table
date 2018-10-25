@@ -26,22 +26,21 @@
 
   <p-fieldset legend="Angesagt">
     <div>
-      <p-dropdown [options]="getMoeglicheAnsagen(true)" [(ngModel)]="aktuelleRunde.reAngesagt"></p-dropdown>
+      <p-dropdown [options]="moeglicheReAnsagen" [(ngModel)]="aktuelleRunde.reAngesagt"></p-dropdown>
       <p-checkbox [(ngModel)]="aktuelleRunde.reVonVorneHerein" label="von vorneherein" binary="true"></p-checkbox>
     </div>
     <div>
-      <p-dropdown [options]="getMoeglicheAnsagen(false)" [(ngModel)]="aktuelleRunde.kontraAngesagt"></p-dropdown>
+      <p-dropdown [options]="moeglicheKontraAnsagen" [(ngModel)]="aktuelleRunde.kontraAngesagt"></p-dropdown>
       <p-checkbox [(ngModel)]="aktuelleRunde.kontraVonVorneHerein" label="von vorneherein" binary="true"></p-checkbox>
     </div>
   </p-fieldset>
-
   <p-fieldset legend="Gespielt">
     <div>
-        <p-dropdown [options]="getMoeglicheErgebnisse()" [(ngModel)]="aktuelleRunde.gespielt"></p-dropdown>
+        <p-dropdown [options]="moeglicheErgebnisse" [(ngModel)]="aktuelleRunde.gespielt"></p-dropdown>
         <span>Extrapunkte: </span> <p-spinner [readonly]="true" size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
     </div>
     <div>
-      <p-dropdown [options]="getMoeglicheSoli()" [(ngModel)]="aktuelleRunde.solo" optionLabel="name"></p-dropdown>
+      <p-dropdown [options]="moeglicheSoli" [(ngModel)]="aktuelleRunde.solo" optionLabel="name"></p-dropdown>
       <p-checkbox [(ngModel)]="aktuelleRunde.armut" label="Armut" binary="true"></p-checkbox>  
       <p-checkbox [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
     </div>
