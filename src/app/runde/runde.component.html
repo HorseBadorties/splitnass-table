@@ -1,25 +1,34 @@
 <div>
   <p-button icon="pi pi-bars" routerLink="/rundenliste"></p-button>
 </div>
+<br>
+<div class="elevation">
+  <p-fieldset legend="Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})">
+    <span *ngFor="let info of getRundenInfo()"  class="info"> {{info}} </span> 
+    <div  class="info">{{getPunktestand()}}</div> 
+  </p-fieldset>
 
-<p-fieldset legend="Runde Nr. {{aktuelleRunde}} von {{gesamtRunden}} ({{statusDerRunde}})">
-  <!-- <p-chips [(ngModel)]="rundeninfo" disabled="true"></p-chips> -->
-  <!-- <p-chips [(ngModel)]="punktestand" disabled="true"></p-chips> -->
-  <span *ngFor="let info of rundeninfo"  class="info"> {{info}} </span> 
-  <div  class="info">{{punktestand}}</div> 
-</p-fieldset>
+  <p-fieldset legend="Angesagt">
+    <div>
+      <p-dropdown [options]="getMoeglicheAnsagen(true)" [(ngModel)]="aktuelleRunde.reAngesagt"></p-dropdown>
+      <p-checkbox [(ngModel)]="aktuelleRunde.reVonVorneHerein" label="von vorneherein" binary="true"></p-checkbox>
+    </div>
+    <div>
+      <p-dropdown [options]="getMoeglicheAnsagen(false)" [(ngModel)]="aktuelleRunde.kontraAngesagt"></p-dropdown>
+      <p-checkbox [(ngModel)]="aktuelleRunde.kontraVonVorneherein" label="von vorneherein" binary="true"></p-checkbox>
+    </div>
+  </p-fieldset>
 
-<p-fieldset legend="Angesagt">
-  <div>
-    <p-dropdown [options]="moeglicheReAnsagen" [(ngModel)]="reAngesagt"></p-dropdown>
-    <p-checkbox [(ngModel)]="reVonVorneherein" label="von vorneherein" binary="true"></p-checkbox>
-  </div>
-  <div>
-    <p-dropdown [options]="moeglicheKontraAnsagen" [(ngModel)]="kontraAngesagt"></p-dropdown>
-    <p-checkbox [(ngModel)]="kontraVonVorneherein" label="von vorneherein" binary="true"></p-checkbox>
-  </div>
-</p-fieldset>
-
-<p-fieldset legend="Gespielt">
-  
-</p-fieldset>
+  <p-fieldset legend="Gespielt">
+    <div>
+        <p-dropdown [options]="getMoeglicheErgebnisse()" [(ngModel)]="aktuelleRunde.gespielt"></p-dropdown>
+        <span>Extrapunkte: </span> <p-spinner size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
+    </div>
+    <div>
+      <p-dropdown [options]="getMoeglicheSoli()" [(ngModel)]="aktuelleRunde.solo" optionLabel="name"></p-dropdown>
+      <p-checkbox [(ngModel)]="aktuelleRunde.armut" label="Armut" binary="true"></p-checkbox>  
+      <p-checkbox [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
+    </div>
+  </p-fieldset>
+  <br>
+</div>

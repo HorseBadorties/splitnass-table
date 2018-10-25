@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { Spieltag } from "../model/spieltag";
 import { Spieler } from "../model/spieler";
+import { Runde } from "../model/runde";
 
 @Injectable({
   providedIn: "root"
@@ -9,6 +10,7 @@ import { Spieler } from "../model/spieler";
 export class SpieltagService {
 
   aktuellerSpieltag: Spieltag;
+  selectedRunde: Runde;
 
   constructor() {
     const spieler = [

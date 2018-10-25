@@ -46,4 +46,9 @@ export class Spieltag {
       .map(r => r.ergebnis)
       .reduce((acc, curr) => acc + curr, 0);
   }
+
+  public getVorherigeRunde(runde: Runde) {
+    const indexOfRunde = this.runden.indexOf(runde);
+    return indexOfRunde > 0 ? this.runden[indexOfRunde - 1] : undefined;
+  }
 }

@@ -28,4 +28,8 @@ export class Solo {
             case 7: return this.STILLES_SOLO;
         }
     }
+
+    toString() {
+        return this.name;
+    }
 }

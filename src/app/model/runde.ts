@@ -18,10 +18,8 @@ export class Runde {
     public boecke = 0,
     public boeckeBeiBeginn = 0,
     // Gespielt
-    public solo: number = Solo.KEIN_SOLO.id,
-    public re = 0,
-    public kontra = 0,
-    public reGewinnt = 0,
+    public gespielt = 0, // 0 = kein Ergebnis/gespaltener Arsch, positiv = Re gewinnt, negativ = Kontra gewinnt
+    public solo = Solo.KEIN_SOLO,
     public gegenDieAlten = false,
     public gegenDieSau = false,
     public extrapunkte = 0,
