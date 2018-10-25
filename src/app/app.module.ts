@@ -9,6 +9,7 @@ import { FieldsetModule } from "primeng/fieldset";
 import { ChipsModule } from "primeng/chips";
 import { DropdownModule } from "primeng/dropdown";
 import { CheckboxModule } from "primeng/checkbox";
+import { ToastModule } from "primeng/toast";
 
 import { AppComponent } from "./app.component";
 import { RundeComponent } from "./runde/runde.component";
@@ -33,6 +34,7 @@ import { AppRoutingModule } from "./app-routing.module";
     ChipsModule,
     DropdownModule,
     CheckboxModule,
+    ToastModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]

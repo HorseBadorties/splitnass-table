@@ -1,45 +1,52 @@
 import { Component, OnInit } from "@angular/core";
 import { SpieltagService } from "../services/spieltag.service";
-import { Runde } from "../model/runde";
+import { MessageService } from "primeng/api";
+import { Runde, Gespielt, Ansage } from "../model/runde";
 import { Spieltag } from "../model/spieltag";
 import { Solo } from "../model/solo";
 
 @Component({
   selector: "app-runde",
   templateUrl: "./runde.component.html",
-  styleUrls: ["./runde.component.css"]
+  styleUrls: ["./runde.component.css"],
+  providers: [MessageService]
 })
 export class RundeComponent implements OnInit {
   spieltag: Spieltag;
   aktuelleRunde: Runde;
 
 
-  constructor(public spieltagService: SpieltagService) { }
+  constructor(public spieltagService: SpieltagService, private messageService: MessageService) { }
+
+  berechneErgebnis() {
+    this.aktuelleRunde.berechneErgebnis();
+    this.messageService.add({severity: "info", summary: "Ergebnis der Runde", detail: this.aktuelleRunde.ergebnis.toString()});
+  }
 
   getMoeglicheAnsagen(fuerRe: boolean) {
     return [
-      {label: "Keine Ansagen", value: 0},
-      {label: `${fuerRe ? "Re" : "Kontra"}`, value: 1},
-      {label: "keine 9", value: 2},
-      {label: "keine 6", value: 3},
-      {label: "keine 3", value: 4},
-      {label: "schwarz", value: 5}
+      {label: "Keine Ansagen", value: Ansage.KeineAnsage.valueOf()},
+      {label: `${fuerRe ? "Re" : "Kontra"}`, value: Ansage.ReOderKontra.valueOf()},
+      {label: "keine 9", value: Ansage.Keine9.valueOf()},
+      {label: "keine 6", value: Ansage.Keine6.valueOf()},
+      {label: "keine 3", value: Ansage.Keine3.valueOf()},
+      {label: "schwarz", value: Ansage.Schwarz.valueOf()}
     ];
   }
 
   getMoeglicheErgebnisse() {
     return [
-      {label: "Gespaltener Arsch", value: 0},
-      {label: "Re gewinnt", value: 1},
-      {label: "Re gewinnt keine 9", value: 2},
-      {label: "Re gewinnt keine 6", value: 3},
-      {label: "Re gewinnt keine 3", value: 4},
-      {label: "Re gewinnt schwarz", value: 5},
-      {label: "Kontra gewinnt", value: -1},
-      {label: "Kontra gewinnt keine 9", value: -2},
-      {label: "Kontra gewinnt keine 6", value: -3},
-      {label: "Kontra gewinnt keine 3", value: -4},
-      {label: "Kontra gewinnt schwarz", value: -5}
+      {label: "Gespaltener Arsch", value: Gespielt.GespaltenerArsch.valueOf()},
+      {label: "Re gewinnt", value: Gespielt.Re.valueOf()},
+      {label: "Re gewinnt keine 9", value: Gespielt.ReKeine9.valueOf()},
+      {label: "Re gewinnt keine 6", value: Gespielt.ReKeine6.valueOf()},
+      {label: "Re gewinnt keine 3", value: Gespielt.ReKeine3.valueOf()},
+      {label: "Re gewinnt schwarz", value: Gespielt.ReSchwarz.valueOf()},
+      {label: "Kontra gewinnt", value: Gespielt.Kontra.valueOf()},
+      {label: "Kontra gewinnt keine 9", value: Gespielt.KontraKeine9.valueOf()},
+      {label: "Kontra gewinnt keine 6", value: Gespielt.KontraKeine6.valueOf()},
+      {label: "Kontra gewinnt keine 3", value: Gespielt.KontraKeine3.valueOf()},
+      {label: "Kontra gewinnt schwarz", value: Gespielt.KontraSchwarz.valueOf()}
     ];
   }
 
@@ -77,7 +84,7 @@ export class RundeComponent implements OnInit {
     if (this.aktuelleRunde.isAktuelleRunde) {
       result.push(`Geber: ${this.aktuelleRunde.geber.name}`);
       result.push(`Aufspielt: ${this.aktuelleRunde.aufspieler.name}`);
-      result.push(`Böcke: ${this.aktuelleRunde.boecke}`);
+      result.push(`Böcke: ${this.aktuelleRunde.boeckeBeiBeginn}`);
       if (this.getErgebnisVorherigeRunde()) {
         result.push(`Ergebnis vorherige Runde: ${this.getErgebnisVorherigeRunde()}`);
       }
@@ -86,7 +93,7 @@ export class RundeComponent implements OnInit {
       result.push(`Ergebnis: ${this.aktuelleRunde.ergebnis}`);
       result.push(`Gewinner: ${this.getGewinner()}`);
     } else {
-      result.push(`Böcke: ${this.aktuelleRunde.boecke}`);
+      result.push(`Böcke: ${this.aktuelleRunde.boeckeBeiBeginn}`);
     }
     return result;
   }

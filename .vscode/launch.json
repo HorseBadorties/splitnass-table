@@ -8,8 +8,10 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:4200",
-            "program": "${workspaceFolder}"
+            "url": "http://localhost:4201",
+            "webRoot": "${workspaceFolder}",
+            "sourceMaps": true,
+            "userDataDir": "${workspaceRoot}/.vscode/chrome"
         }
     ]
 }
