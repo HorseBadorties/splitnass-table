@@ -24,6 +24,10 @@ export class RundeComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService) { }
 
+  isNochNichtGespielteRunde() {
+    return !this.aktuelleRunde.isGespielteRunde() && !this.aktuelleRunde.isAktuelleRunde();
+  }
+
   rundeAbrechnen() {
     if (this.aktuelleRunde.gespielt === Gespielt.GespaltenerArsch) {
       this.confirmGespaltenerArsch();
@@ -95,13 +99,16 @@ export class RundeComponent implements OnInit {
     this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => {
       this.spieltag = spieltag;
       this.aktuelleRunde = spieltag.aktuelleRunde;
+      if (this.spieltagService.selectedRunde) {
+        this.aktuelleRunde = this.spieltagService.selectedRunde;
+      }
     });
   }
 
   getStatusDerRunde() {
-    if (this.aktuelleRunde.isAktuelleRunde) {
+    if (this.aktuelleRunde.isAktuelleRunde()) {
       return "aktuell laufende Runde";
-    } else if (this.aktuelleRunde.isGespielteRunde) {
+    } else if (this.aktuelleRunde.isGespielteRunde()) {
       return "bereits gespielte Runde";
     } else {
       return "noch nicht begonnene Runde";
@@ -110,14 +117,14 @@ export class RundeComponent implements OnInit {
 
   getRundenInfo() {
     const result = [];
-    if (this.aktuelleRunde.isAktuelleRunde) {
+    if (this.aktuelleRunde.isAktuelleRunde()) {
       result.push(`Geber: ${this.aktuelleRunde.geber.name}`);
       result.push(`Aufspielt: ${this.aktuelleRunde.aufspieler.name}`);
       result.push(`Böcke: ${this.aktuelleRunde.boeckeBeiBeginn}`);
       if (this.getErgebnisVorherigeRunde()) {
         result.push(`Ergebnis vorherige Runde: ${this.getErgebnisVorherigeRunde()}`);
       }
-    } else if (this.aktuelleRunde.isGespielteRunde) {
+    } else if (this.aktuelleRunde.isGespielteRunde()) {
       result.push(`Geber: ${this.aktuelleRunde.geber.name}`);
       result.push(`Ergebnis: ${this.aktuelleRunde.ergebnis}`);
       result.push(`Gewinner: ${this.getGewinner()}`);

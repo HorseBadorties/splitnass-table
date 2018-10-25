@@ -15,13 +15,13 @@
 
 <div>
   <p-button icon="pi pi-bars" routerLink="/rundenliste"></p-button>
-  <p-button icon="pi pi-eye" (click)="rundeAbrechnen()"></p-button>
+  <p-button *ngIf="!isNochNichtGespielteRunde()" icon="pi pi-eye" (click)="rundeAbrechnen()"></p-button>
 </div>
 <br>
 <div class="elevation">
   <p-fieldset legend="Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})">
     <span *ngFor="let info of getRundenInfo()"  class="info"><i class="pi pi-caret-right"></i>{{info}} </span> 
-    <div  class="info">{{getPunktestand()}}</div> 
+    <div *ngIf="!isNochNichtGespielteRunde()" class="info">{{getPunktestand()}}</div> 
   </p-fieldset>
 
   <p-fieldset legend="Angesagt">
@@ -38,7 +38,7 @@
   <p-fieldset legend="Gespielt">
     <div>
         <p-dropdown [options]="getMoeglicheErgebnisse()" [(ngModel)]="aktuelleRunde.gespielt"></p-dropdown>
-        <span>Extrapunkte: </span> <p-spinner size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
+        <span>Extrapunkte: </span> <p-spinner [readonly]="true" size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
     </div>
     <div>
       <p-dropdown [options]="getMoeglicheSoli()" [(ngModel)]="aktuelleRunde.solo" optionLabel="name"></p-dropdown>

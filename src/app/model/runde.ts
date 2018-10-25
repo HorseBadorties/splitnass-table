@@ -102,7 +102,7 @@ export class Runde {
       if (gegenDieAlten) {
         this.ergebnis++;
       }
-      if (this.gegenDieSau) {
+      if (this.gegenDieSau && this.solo.sauMoeglich) {
         this.ergebnis++;
       }
       if (this.solo !== Solo.KEIN_SOLO) {

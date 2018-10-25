@@ -72,13 +72,8 @@ export class RundenlisteComponent implements OnInit, AfterViewInit {
     return item.nr;
   }
 
-  buttonClicked() {
-    this.selectedRunde.ergebnis = 32;
-    this.selectedRunde.boecke = 2;
-    const spieler = this.spieltag.spieler.slice(0, 4);
-    this.selectedRunde.spieler = spieler;
-    this.selectedRunde.gewinner = spieler.slice(0, 2);
-    this.spieltag.aktuelleRunde = this.selectedRunde;
+  rundeClicked(runde: Runde) {
+    this.spieltagService.selectedRunde = runde;
   }
 
   scrollToRunde(runde: Runde) {
