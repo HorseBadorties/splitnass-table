@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { SpieltagService } from "../services/spieltag.service";
-import { MessageService } from "primeng/api";
+import { MessageService, ConfirmationService } from "primeng/api";
 import { Runde, Gespielt, Ansage } from "../model/runde";
 import { Spieltag } from "../model/spieltag";
 import { Solo } from "../model/solo";
@@ -9,18 +9,38 @@ import { Solo } from "../model/solo";
   selector: "app-runde",
   templateUrl: "./runde.component.html",
   styleUrls: ["./runde.component.css"],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class RundeComponent implements OnInit {
   spieltag: Spieltag;
   aktuelleRunde: Runde;
 
 
-  constructor(public spieltagService: SpieltagService, private messageService: MessageService) { }
+  constructor(
+    public spieltagService: SpieltagService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService) { }
 
   berechneErgebnis() {
+    if (this.aktuelleRunde.gespielt === Gespielt.GespaltenerArsch) {
+      this.confirmGespaltenerArsch();
+    } else {
+      this.doBerechneErgebnis();
+    }
+  }
+
+  private doBerechneErgebnis() {
     this.aktuelleRunde.berechneErgebnis();
     this.messageService.add({severity: "info", summary: "Ergebnis der Runde", detail: this.aktuelleRunde.ergebnis.toString()});
+  }
+
+  confirmGespaltenerArsch() {
+    this.confirmationService.confirm({
+      message: "Really?",
+      accept: () => {
+        this.doBerechneErgebnis();
+      }
+    });
   }
 
   getMoeglicheAnsagen(fuerRe: boolean) {
