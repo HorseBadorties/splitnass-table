@@ -37,6 +37,23 @@ export class RundeComponent implements OnInit {
     return !this.aktuelleRunde.isGespielteRunde() && !this.aktuelleRunde.isAktuelleRunde();
   }
 
+  vorherigeRunde() {
+    if (this.spieltag.getVorherigeRunde(this.aktuelleRunde)) {
+      this.setAktuelleRunde(this.spieltag.getVorherigeRunde(this.aktuelleRunde));
+    }
+  }
+
+  naechsteRunde() {
+    if (this.spieltag.getNaechsteRunde(this.aktuelleRunde)) {
+      this.setAktuelleRunde(this.spieltag.getNaechsteRunde(this.aktuelleRunde));
+    }
+  }
+
+  private setAktuelleRunde(r: Runde) {
+    this.aktuelleRunde = r;
+    this.selectedGewinner = this.aktuelleRunde.gewinner;
+  }
+
   rundeAbrechnen() {
     if (this.aktuelleRunde.gespielt === Gespielt.GespaltenerArsch) {
       this.confirmGespaltenerArsch();
@@ -60,7 +77,7 @@ export class RundeComponent implements OnInit {
     this.aktuelleRunde.gewinner = this.selectedGewinner;
     // this.messageService.add({severity: "info", summary: "Ergebnis der Runde", detail: this.aktuelleRunde.ergebnis.toString()});
     this.spieltag.startNaechsteRunde();
-    this.aktuelleRunde = this.spieltag.aktuelleRunde;
+    this.setAktuelleRunde(this.spieltag.aktuelleRunde);
   }
 
   confirmGespaltenerArsch() {
@@ -116,10 +133,10 @@ export class RundeComponent implements OnInit {
   ngOnInit() {
     this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => {
       this.spieltag = spieltag;
-      this.aktuelleRunde = spieltag.aktuelleRunde;
-      this.selectedGewinner = this.aktuelleRunde.gewinner;
       if (this.spieltagService.selectedRunde) {
-        this.aktuelleRunde = this.spieltagService.selectedRunde;
+        this.setAktuelleRunde(this.spieltagService.selectedRunde);
+      } else {
+        this.setAktuelleRunde(spieltag.aktuelleRunde);
       }
     });
   }
@@ -141,7 +158,7 @@ export class RundeComponent implements OnInit {
       result.push(`Aufspielt: ${this.aktuelleRunde.aufspieler.name}`);
       result.push(`Böcke: ${this.aktuelleRunde.boeckeBeiBeginn}`);
       if (this.getErgebnisVorherigeRunde()) {
-        result.push(`Ergebnis vorherige Runde: ${this.getErgebnisVorherigeRunde()}`);
+        result.push(`Vorherige Runde: ${this.getErgebnisVorherigeRunde()}`);
       }
     } else if (this.aktuelleRunde.isGespielteRunde()) {
       result.push(`Geber: ${this.aktuelleRunde.geber.name}`);
