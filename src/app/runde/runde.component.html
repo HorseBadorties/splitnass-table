@@ -2,15 +2,18 @@
 
 <p-confirmDialog icon="pi pi-exclamation-triangle" ></p-confirmDialog>
 
-<p-dialog header="Gewinner der Runde auswählen" [(visible)]="displayGewinnerDialog" 
+<p-dialog header="{{getAnzahlGewinner()}} Gewinner auswählen!" [(visible)]="displayGewinnerDialog" 
   [modal]="true" [responsive]="true">
        
-  <p-listbox [options]="aktuelleRunde.spieler" [(ngModel)]="aktuelleRunde.gewinner" 
-    multiple="multiple" checkbox="checkbox" optionLabel="name" [showToggleAll]="false"></p-listbox>
-      <p-footer>
-          <button type="button" pButton icon="pi pi-check" (click)="berechneErgebnis()" label="Ok"></button>
-          <button type="button" pButton icon="pi pi-close" (click)="displayGewinnerDialog=false" label="Cancel" class="ui-button-secondary"></button>
-      </p-footer>
+  <div>Ergebnis: {{aktuelleRunde.ergebnis}} {{aktuelleRunde.ergebnis !== 1 ? "Punkte" : "Punkt"}}</div>
+  <p-listbox [options]="aktuelleRunde.spieler" [(ngModel)]="selectedGewinner" 
+    multiple="multiple" checkbox="checkbox" optionLabel="name" [showToggleAll]="false">
+  </p-listbox>
+  <p-footer>
+      <p-button label="Ok" icon="pi pi-check" (onClick)="rundeAbgerechnet()" [disabled]="selectedGewinner.length !== getAnzahlGewinner()" ></p-button>
+      <p-button label="Cancel" icon="pi pi-close" (onClick)="displayGewinnerDialog=false"  class="ui-button-secondary"></p-button>
+  </p-footer>
+  
 </p-dialog>
 
 <div>

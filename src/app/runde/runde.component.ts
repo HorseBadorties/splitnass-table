@@ -41,18 +41,26 @@ export class RundeComponent implements OnInit {
     if (this.aktuelleRunde.gespielt === Gespielt.GespaltenerArsch) {
       this.confirmGespaltenerArsch();
     } else {
-      this.pickGewinner();
+      this.aktuelleRunde.berechneErgebnis();
+      if (this.aktuelleRunde.ergebnis === 0) {
+        this.messageService.add({severity: "info", summary: "Gespaltener Arsch!", detail: "Böcke! :-)"});
+        this.rundeAbgerechnet();
+      } else {
+        this.displayGewinnerDialog = true;
+      }
     }
   }
 
-  pickGewinner() {
-    this.displayGewinnerDialog = true;
+  getAnzahlGewinner() {
+    return this.aktuelleRunde.solo === Solo.KEIN_SOLO ? 2 : this.aktuelleRunde.reGewinnt ? 1 : 3;
   }
 
-  berechneErgebnis() {
+  rundeAbgerechnet() {
     this.displayGewinnerDialog = false;
-    this.aktuelleRunde.berechneErgebnis();
-    this.messageService.add({severity: "info", summary: "Ergebnis der Runde", detail: this.aktuelleRunde.ergebnis.toString()});
+    this.aktuelleRunde.gewinner = this.selectedGewinner;
+    // this.messageService.add({severity: "info", summary: "Ergebnis der Runde", detail: this.aktuelleRunde.ergebnis.toString()});
+    this.spieltag.startNaechsteRunde();
+    this.aktuelleRunde = this.spieltag.aktuelleRunde;
   }
 
   confirmGespaltenerArsch() {
@@ -60,14 +68,15 @@ export class RundeComponent implements OnInit {
       header: "Gespaltener Arsch?",
       message: "Really?",
       accept: () => {
-        this.pickGewinner();
+        this.aktuelleRunde.berechneErgebnis();
+        this.rundeAbgerechnet();
       }
     });
   }
 
   private getMoeglicheAnsagen(fuerRe: boolean): SelectItem[] {
     return [
-      {label: "Keine Ansagen", value: Ansage.KeineAnsage},
+      {label: `<keine ${fuerRe ? "Re" : "Kontra"} Ansagen>`, value: Ansage.KeineAnsage},
       {label: `${fuerRe ? "Re" : "Kontra"}`, value: Ansage.ReOderKontra},
       {label: "keine 9", value: Ansage.Keine9},
       {label: "keine 6", value: Ansage.Keine6},
@@ -78,17 +87,17 @@ export class RundeComponent implements OnInit {
 
   private getMoeglicheErgebnisse(): SelectItem[] {
     return [
-      {label: "Gespaltener Arsch", value: Gespielt.GespaltenerArsch},
+      {label: "<kein Ergebnis>", value: Gespielt.GespaltenerArsch},
       {label: "Re gewinnt", value: Gespielt.Re},
-      {label: "Re gewinnt keine 9", value: Gespielt.ReKeine9},
-      {label: "Re gewinnt keine 6", value: Gespielt.ReKeine6},
-      {label: "Re gewinnt keine 3", value: Gespielt.ReKeine3},
-      {label: "Re gewinnt schwarz", value: Gespielt.ReSchwarz},
+      {label: "Re keine 9", value: Gespielt.ReKeine9},
+      {label: "Re keine 6", value: Gespielt.ReKeine6},
+      {label: "Re keine 3", value: Gespielt.ReKeine3},
+      {label: "Re schwarz", value: Gespielt.ReSchwarz},
       {label: "Kontra gewinnt", value: Gespielt.Kontra},
-      {label: "Kontra gewinnt keine 9", value: Gespielt.KontraKeine9},
-      {label: "Kontra gewinnt keine 6", value: Gespielt.KontraKeine6},
-      {label: "Kontra gewinnt keine 3", value: Gespielt.KontraKeine3},
-      {label: "Kontra gewinnt schwarz", value: Gespielt.KontraSchwarz}
+      {label: "Kontra keine 9", value: Gespielt.KontraKeine9},
+      {label: "Kontra keine 6", value: Gespielt.KontraKeine6},
+      {label: "Kontra keine 3", value: Gespielt.KontraKeine3},
+      {label: "Kontra schwarz", value: Gespielt.KontraSchwarz}
     ];
   }
 
@@ -108,6 +117,7 @@ export class RundeComponent implements OnInit {
     this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => {
       this.spieltag = spieltag;
       this.aktuelleRunde = spieltag.aktuelleRunde;
+      this.selectedGewinner = this.aktuelleRunde.gewinner;
       if (this.spieltagService.selectedRunde) {
         this.aktuelleRunde = this.spieltagService.selectedRunde;
       }
@@ -146,7 +156,7 @@ export class RundeComponent implements OnInit {
   private getErgebnisVorherigeRunde() {
     const vorherigeRunde = this.spieltag.getVorherigeRunde(this.aktuelleRunde);
     if (vorherigeRunde) {
-      return `Ergebnis vorherige Runde: ${vorherigeRunde.ergebnis}`;
+      return vorherigeRunde.ergebnis;
     } else {
       return undefined;
     }
@@ -154,13 +164,13 @@ export class RundeComponent implements OnInit {
 
   getPunktestand() {
     return "Punktestand: " + this.spieltag.spieler
-    .map(spieler => `${spieler.name}=${this.spieltag.getPunktestand(this.aktuelleRunde, spieler)}`)
-    .join(", ");
+      .map(spieler => `${spieler.name}=${this.spieltag.getPunktestand(this.aktuelleRunde, spieler)}`)
+      .join(", ");
   }
 
   private getGewinner() {
     return this.aktuelleRunde.gewinner
-      .map(spieler => spieler.name).join(",");
+      .map(spieler => spieler.name).join(", ");
   }
 
 }

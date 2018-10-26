@@ -21,6 +21,7 @@ export class Runde {
     // 0 = kein Ergebnis/gespaltener Arsch, positiv = Re gewinnt, negativ = Kontra gewinnt
     public gespielt = Gespielt.GespaltenerArsch,
     public solo = Solo.KEIN_SOLO,
+    public reGewinnt = false,
     public gegenDieSau = false,
     public extrapunkte = 0,
     public armut = false,
@@ -54,82 +55,80 @@ export class Runde {
       // Bei Null zählt das angesagte Ergebnis. Wenn nichts angesagt, dann 120
       gespieltePunkte = this.reAngesagt > 0 ? this.reAngesagt : 1;
     }
-    if (this.solo !== Solo.NULL) {
-      // Re un Kontra haben falsche Ansagen gemacht: gespaltener Arsch
-      if (gespieltePunkte < this.reAngesagt && gespieltePunkte < this.kontraAngesagt) {
-        this.ergebnis = 0;
-        return this.ergebnis;
-      }
-      // nichts angesagt und keine 6 oder besser: gespaltener Arsch
-      if (gespieltePunkte >= 3 && !this.reAngesagt && !this.kontraAngesagt) {
-        this.ergebnis = 0;
-        return this.ergebnis;
-      }
-      // Hat unter Berücksichtigung der Ansagen Re oder Kontra gewonnen?
-      let reGewinnt = this.gespielt > 0;
-      if (reGewinnt) {
-        reGewinnt = this.gespielt.valueOf() >= this.reAngesagt.valueOf() || this.solo === Solo.NULL;
-      } else {
-        reGewinnt = gespieltePunkte < this.kontraAngesagt;
-      }
-      // Gegen die Alten?
-      const gegenDieAlten = !reGewinnt && !this.armut && this.solo.gegenDieAltenMoeglich;
-      // berechnen
-      const maxAnsage = Math.max(this.reAngesagt, this.kontraAngesagt);
-      if (maxAnsage > gespieltePunkte && this.solo !== Solo.NULL) {
-        const relevanteAnsage = reGewinnt ? this.kontraAngesagt : this.reAngesagt;
-        for (let i = maxAnsage; i > gespieltePunkte; i--) {
-          if (relevanteAnsage >= i) {
-            this.ergebnis += 2;
-          }
+    // Re un Kontra haben falsche Ansagen gemacht: gespaltener Arsch
+    if (gespieltePunkte < this.reAngesagt && gespieltePunkte < this.kontraAngesagt && this.solo !== Solo.NULL) {
+      this.ergebnis = 0;
+      return this.ergebnis;
+    }
+    // nichts angesagt und keine 6 oder besser: gespaltener Arsch
+    if (gespieltePunkte >= 3 && !this.reAngesagt && !this.kontraAngesagt && this.solo !== Solo.NULL) {
+      this.ergebnis = 0;
+      return this.ergebnis;
+    }
+    // Hat unter Berücksichtigung der Ansagen Re oder Kontra gewonnen?
+    this.reGewinnt = this.gespielt > 0;
+    if (this.reGewinnt) {
+      this.reGewinnt = this.gespielt.valueOf() >= this.reAngesagt.valueOf() || this.solo === Solo.NULL;
+    } else {
+      this.reGewinnt = gespieltePunkte < this.kontraAngesagt;
+    }
+    // Gegen die Alten?
+    const gegenDieAlten = !this.reGewinnt && !this.armut && this.solo.gegenDieAltenMoeglich;
+    // berechnen
+    const maxAnsage = Math.max(this.reAngesagt, this.kontraAngesagt);
+    if (maxAnsage > gespieltePunkte && this.solo !== Solo.NULL) {
+      const relevanteAnsage = this.reGewinnt ? this.kontraAngesagt : this.reAngesagt;
+      for (let i = maxAnsage; i > gespieltePunkte; i--) {
+        if (relevanteAnsage >= i) {
+          this.ergebnis += 2;
         }
       }
-      for (let i = gespieltePunkte; i > 0; i--) {
+    }
+    for (let i = gespieltePunkte; i > 0; i--) {
+      this.ergebnis++;
+      if (i > 1 && this.reAngesagt >= i) {
         this.ergebnis++;
-        if (i > 1 && this.reAngesagt >= i) {
+        if (!this.reGewinnt && this.gespielt < 0 && this.solo !== Solo.NULL) {
           this.ergebnis++;
-          if (!reGewinnt && this.gespielt < 0 && this.solo !== Solo.NULL) {
-            this.ergebnis++;
-          }
         }
-        if (i > 1 && this.kontraAngesagt >= i) {
+      }
+      if (i > 1 && this.kontraAngesagt >= i) {
+        this.ergebnis++;
+        if (this.reGewinnt && this.gespielt > 0 && this.solo !== Solo.NULL) {
           this.ergebnis++;
-          if (reGewinnt && this.gespielt > 0 && this.solo !== Solo.NULL) {
-            this.ergebnis++;
-          }
         }
       }
-      if (gegenDieAlten) {
-        this.ergebnis++;
-      }
-      if (this.gegenDieSau && this.solo.sauMoeglich) {
-        this.ergebnis++;
-      }
-      if (this.solo !== Solo.KEIN_SOLO) {
-        this.ergebnis++;
-      }
-      // verlorenes Solo?
-      if (this.ergebnis > 0 && this.solo !== Solo.KEIN_SOLO && !reGewinnt) {
-        this.ergebnis++;
-      }
-      if (this.reVonVorneHerein) {
-        this.ergebnis++;
-      }
-      if (this.kontraVonVorneHerein) {
-        this.ergebnis++;
-      }
-      if (this.extrapunkte !== 0) {
-        this.ergebnis += this.extrapunkte;
-      }
-      // durch negative Extrapunkte kann die Gegenseite gewonnen haben...! (gegenDieAlten etc.)
-      if (this.ergebnis < 0) {
-        this.ergebnis = Math.abs(this.ergebnis);
-        reGewinnt = !reGewinnt;
-      }
-      // Böcke
-      if (this.boecke) {
-        this.ergebnis = this.boecke * 2 * this.ergebnis;
-      }
+    }
+    if (gegenDieAlten) {
+      this.ergebnis++;
+    }
+    if (this.gegenDieSau && this.solo.sauMoeglich) {
+      this.ergebnis++;
+    }
+    if (this.solo !== Solo.KEIN_SOLO) {
+      this.ergebnis++;
+    }
+    // verlorenes Solo?
+    if (this.ergebnis > 0 && this.solo !== Solo.KEIN_SOLO && !this.reGewinnt) {
+      this.ergebnis++;
+    }
+    if (this.reVonVorneHerein) {
+      this.ergebnis++;
+    }
+    if (this.kontraVonVorneHerein) {
+      this.ergebnis++;
+    }
+    if (this.extrapunkte !== 0) {
+      this.ergebnis += this.extrapunkte;
+    }
+    // durch negative Extrapunkte kann die Gegenseite gewonnen haben...! (gegenDieAlten etc.)
+    if (this.ergebnis < 0) {
+      this.ergebnis = Math.abs(this.ergebnis);
+      this.reGewinnt = !this.reGewinnt;
+    }
+    // Böcke
+    if (this.boecke) {
+      this.ergebnis = this.boecke * 2 * this.ergebnis;
     }
     return this.ergebnis;
   }

@@ -24,6 +24,15 @@ export class Spieltag {
     this.aktuelleRunde.aufspieler = this.getNaechstenSpieler(geber);
   }
 
+  startNaechsteRunde() {
+    const naechsteRunde = this.getNaechsteRunde(this.aktuelleRunde);
+    naechsteRunde.geber = this.aktuelleRunde.solo.regulaeresAufspiel
+      ? this.getNaechstenSpieler(this.aktuelleRunde.geber) : this.aktuelleRunde.geber;
+    naechsteRunde.spieler = this.getSpieler(naechsteRunde.geber);
+    naechsteRunde.aufspieler = this.getNaechstenSpieler(naechsteRunde.geber);
+    this.aktuelleRunde = naechsteRunde;
+  }
+
   private getSpieler(geber: Spieler): Array<Spieler> {
     const result = [];
     let _spieler = geber;
@@ -50,5 +59,10 @@ export class Spieltag {
   public getVorherigeRunde(runde: Runde) {
     const indexOfRunde = this.runden.indexOf(runde);
     return indexOfRunde > 0 ? this.runden[indexOfRunde - 1] : undefined;
+  }
+
+  public getNaechsteRunde(runde: Runde) {
+    const indexOfRunde = this.runden.indexOf(runde);
+    return indexOfRunde < this.runden.length - 1 ? this.runden[indexOfRunde + 1] : undefined;
   }
 }
