@@ -1,7 +1,11 @@
-<div>
-  <p-button icon="pi pi-home" routerLink="/runde"></p-button>
-</div>
-<br>
+<p-toolbar>
+  <div class="ui-toolbar-group-left">
+    <p-button icon="pi pi-home" routerLink="/runde"></p-button>
+  </div>
+  <div class="ui-toolbar-group-right">
+    
+  </div>
+</p-toolbar>
 <div class="elevation">
   <p-table [columns]="displayedColumns" [value]="spieltag.runden" [scrollable]="true" scrollHeight="200px" selectionMode="single"
     [(selection)]="selectedRunde">

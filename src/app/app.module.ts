@@ -13,6 +13,7 @@ import { ToastModule } from "primeng/toast";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { DialogModule } from "primeng/dialog";
 import { ListboxModule } from "primeng/listbox";
+import { ToolbarModule } from "primeng/toolbar";
 
 import { AppComponent } from "./app.component";
 import { RundeComponent } from "./runde/runde.component";
@@ -41,6 +42,7 @@ import { AppRoutingModule } from "./app-routing.module";
     ConfirmDialogModule,
     DialogModule,
     ListboxModule,
+    ToolbarModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]
