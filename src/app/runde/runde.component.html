@@ -23,10 +23,9 @@
    <p-button icon="pi pi-angle-left" (click)="vorherigeRunde()"></p-button>
    <span class="box"> </span>
    <p-button icon="pi pi-angle-right" (click)="naechsteRunde()"></p-button>
-
   </div>
   <div class="ui-toolbar-group-right">
-    <p-button *ngIf="!isNochNichtGespielteRunde()" icon="pi pi-eye" (click)="rundeAbrechnen()" styleClass="ui-button-success"></p-button>
+    <p-button *ngIf="!isNochNichtGespielteRunde()" icon="pi pi-check" (click)="rundeAbrechnen()" styleClass="ui-button-success"></p-button>
   </div>
 </p-toolbar>
 

@@ -14,6 +14,7 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { DialogModule } from "primeng/dialog";
 import { ListboxModule } from "primeng/listbox";
 import { ToolbarModule } from "primeng/toolbar";
+import { MessageModule } from "primeng/message";
 
 import { AppComponent } from "./app.component";
 import { RundeComponent } from "./runde/runde.component";
@@ -43,6 +44,7 @@ import { AppRoutingModule } from "./app-routing.module";
     DialogModule,
     ListboxModule,
     ToolbarModule,
+    MessageModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]

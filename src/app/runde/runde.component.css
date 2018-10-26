@@ -11,8 +11,17 @@
 .box {
   font-family:Verdana,sans-serif;
   font-size:11px; 
+  text-align: left;
   /* background-color: rgba(0,0,0,0.23); */
   /* border-radius: 4px; */
-  text-align: left;
+  /* border-style: outset; */
+  /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
   padding-right: 1em;
+  /* padding-left: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px; */
+}
+
+.ui-fieldset .ui-state-default {
+  background: none;
 }
