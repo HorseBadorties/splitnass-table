@@ -43,6 +43,15 @@ export class RundeComponent implements OnInit {
     }
   }
 
+  angesagtChanged(re: boolean) {
+    if (re && this.aktuelleRunde.reVonVorneHerein && this.aktuelleRunde.reAngesagt === Ansage.KeineAnsage) {
+      this.aktuelleRunde.reVonVorneHerein = false;
+    }
+    if (!re && this.aktuelleRunde.kontraVonVorneHerein && this.aktuelleRunde.kontraAngesagt === Ansage.KeineAnsage) {
+      this.aktuelleRunde.kontraVonVorneHerein = false;
+    }
+  }
+
   isNochNichtGespielteRunde() {
     return !this.aktuelleRunde.isGespielteRunde() && !this.aktuelleRunde.isAktuelleRunde();
   }

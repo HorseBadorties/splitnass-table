@@ -85,6 +85,13 @@ export class RundenlisteComponent implements OnInit, AfterViewInit {
     }
   }
 
+  formatDate(date: Date) {
+    const yyyy = date.getFullYear();
+    const mm = date.getMonth() + 1; // getMonth() is zero-based
+    const dd  = date.getDate();
+    return dd.toString() + "." + mm.toString() + "." + yyyy.toString();
+  }
+
   private scrollToNr(nr: string) {
     this.scrollTo(this.rowsPrime.find(r => r.nativeElement.getAttribute("nr") === nr));
   }
