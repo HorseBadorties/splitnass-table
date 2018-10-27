@@ -19,7 +19,7 @@ export class Runde {
     public boeckeBeiBeginn = 0,
     // Gespielt
     // 0 = kein Ergebnis/gespaltener Arsch, positiv = Re gewinnt, negativ = Kontra gewinnt
-    public gespielt = Gespielt.GespaltenerArsch,
+    public gespielt?: Gespielt,
     public solo = Solo.KEIN_SOLO,
     public reGewinnt = false,
     public gegenDieSau = false,

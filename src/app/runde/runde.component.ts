@@ -33,6 +33,16 @@ export class RundeComponent implements OnInit {
       this.moeglicheSoli = this.getMoeglicheSoli();
      }
 
+
+  vonVorneHereinChanged(re: boolean) {
+    if (re && this.aktuelleRunde.reVonVorneHerein && this.aktuelleRunde.reAngesagt === Ansage.KeineAnsage) {
+      this.aktuelleRunde.reAngesagt = Ansage.ReOderKontra;
+    }
+    if (!re && this.aktuelleRunde.kontraVonVorneHerein && this.aktuelleRunde.kontraAngesagt === Ansage.KeineAnsage) {
+      this.aktuelleRunde.kontraAngesagt = Ansage.ReOderKontra;
+    }
+  }
+
   isNochNichtGespielteRunde() {
     return !this.aktuelleRunde.isGespielteRunde() && !this.aktuelleRunde.isAktuelleRunde();
   }
@@ -104,7 +114,7 @@ export class RundeComponent implements OnInit {
 
   private getMoeglicheErgebnisse(): SelectItem[] {
     return [
-      {label: "<kein Ergebnis>", value: Gespielt.GespaltenerArsch},
+      {label: "<kein Ergebnis>", value: undefined},
       {label: "Re gewinnt", value: Gespielt.Re},
       {label: "Re keine 9", value: Gespielt.ReKeine9},
       {label: "Re keine 6", value: Gespielt.ReKeine6},
@@ -114,7 +124,8 @@ export class RundeComponent implements OnInit {
       {label: "Kontra keine 9", value: Gespielt.KontraKeine9},
       {label: "Kontra keine 6", value: Gespielt.KontraKeine6},
       {label: "Kontra keine 3", value: Gespielt.KontraKeine3},
-      {label: "Kontra schwarz", value: Gespielt.KontraSchwarz}
+      {label: "Kontra schwarz", value: Gespielt.KontraSchwarz},
+      {label: "Gespaltener Arsch", value: Gespielt.GespaltenerArsch}
     ];
   }
 

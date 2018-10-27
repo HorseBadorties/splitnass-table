@@ -25,7 +25,9 @@
    <p-button icon="pi pi-angle-right" (click)="naechsteRunde()"></p-button>
   </div>
   <div class="ui-toolbar-group-right">
-    <p-button *ngIf="!isNochNichtGespielteRunde()" icon="pi pi-check" (click)="rundeAbrechnen()" styleClass="ui-button-success"></p-button>
+    <p-button *ngIf="!isNochNichtGespielteRunde()" [disabled]="aktuelleRunde.gespielt === undefined" 
+      (onClick)="rundeAbrechnen()" icon="pi pi-check" styleClass="ui-button-success">
+    </p-button>
   </div>
 </p-toolbar>
 
@@ -39,25 +41,29 @@
   <p-fieldset legend="Angesagt">
     <div class="p-grid p-dir-col">
       <div class="p-col p-col-align-start">
+        <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.reVonVorneHerein" 
+          label="von vorneherein" binary="true" (onChange)="vonVorneHereinChanged(true)">
+        </p-checkbox>
         <p-dropdown class="p-col"  [options]="moeglicheReAnsagen" [(ngModel)]="aktuelleRunde.reAngesagt"></p-dropdown>
-        <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.reVonVorneHerein" label="von vorneherein" binary="true"></p-checkbox>
       </div>
       <div class="p-col p-col-align-start">
+        <p-checkbox  class="p-col" [(ngModel)]="aktuelleRunde.kontraVonVorneHerein" 
+          label="von vorneherein" binary="true" (onChange)="vonVorneHereinChanged(false)">
+        </p-checkbox>
         <p-dropdown  class="p-col" [options]="moeglicheKontraAnsagen" [(ngModel)]="aktuelleRunde.kontraAngesagt"></p-dropdown>
-        <p-checkbox  class="p-col" [(ngModel)]="aktuelleRunde.kontraVonVorneHerein" label="von vorneherein" binary="true"></p-checkbox>
       </div>
     </div>
   </p-fieldset>
   <p-fieldset legend="Gespielt">
       <div class="p-grid p-dir-col">
-        <div class="p-col p-col-align-start"> 
-          <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="aktuelleRunde.gespielt"></p-dropdown>
-          <span class="p-col">Extrapunkte: </span> <p-spinner [readonly]="true" size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
-        </div>
         <div class="p-col p-col-align-start">
           <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="aktuelleRunde.solo" optionLabel="name"></p-dropdown>
           <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.armut" label="Armut" binary="true"></p-checkbox>  
           <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
+        </div>
+        <div class="p-col p-col-align-start"> 
+          <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="aktuelleRunde.gespielt"></p-dropdown>
+          <span class="p-col">Extrapunkte: </span> <p-spinner [readonly]="true" size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
         </div>
     </div>
   </p-fieldset>
