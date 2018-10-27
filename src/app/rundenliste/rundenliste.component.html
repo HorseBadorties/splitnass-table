@@ -6,7 +6,7 @@
       <p-button icon="pi pi-home" routerLink="/runde"></p-button>
   </div>
 </p-toolbar>
-<div class="elevation">
+<div class="elevation" style="padding-top: 0.2em;">
   <p-table [columns]="displayedColumns" [value]="spieltag.runden" [scrollable]="true" scrollHeight="200px" selectionMode="single"
     [(selection)]="selectedRunde">
     <ng-template pTemplate="header" let-columns>
