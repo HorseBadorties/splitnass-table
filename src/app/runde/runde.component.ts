@@ -191,8 +191,8 @@ export class RundeComponent implements OnInit {
   }
 
   getPunktestand() {
-    return "Punktestand: " + this.spieltag.spieler
-      .map(spieler => `${spieler.name}=${this.spieltag.getPunktestand(this.aktuelleRunde, spieler)}`)
+    return this.spieltag.spieler
+      .map(spieler => `${spieler.name} = ${this.spieltag.getPunktestand(this.aktuelleRunde, spieler)}`)
       .join(", ");
   }
 

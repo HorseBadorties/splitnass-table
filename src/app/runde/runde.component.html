@@ -38,7 +38,7 @@
     <div *ngIf="!isNochNichtGespielteRunde()" class="box">{{getPunktestand()}}</div> 
   </p-fieldset>
 
-  <p-fieldset legend="Angesagt">
+  <p-fieldset legend="Angesagt" >
     <div class="p-grid p-dir-col">
       <div class="p-col p-col-align-start">
         <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.reVonVorneHerein" 
@@ -54,6 +54,7 @@
       </div>
     </div>
   </p-fieldset>
+
   <p-fieldset legend="Gespielt">
       <div class="p-grid p-dir-col">
         <div class="p-col p-col-align-start">
@@ -67,5 +68,5 @@
         </div>
     </div>
   </p-fieldset>
-  <br>
+
 </div>
