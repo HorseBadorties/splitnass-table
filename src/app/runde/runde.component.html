@@ -31,51 +31,73 @@
   </div> -->
 </p-toolbar>
 
- <div>
+<div class="pad-1-top"></div>
 
-  <p-fieldset legend="Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})">
+  <p-panel header="Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})">
     <span *ngFor="let info of getRundenInfo()"  class="box">{{info}}</span> 
-    <div *ngIf="!isNochNichtGespielteRunde()" class="box">{{getPunktestand()}}</div> 
-  </p-fieldset>
+    <div *ngIf="!isNochNichtGespielteRunde()" class="box">{{getPunktestand()}}</div>
+  </p-panel>
 
-  <p-fieldset legend="Angesagt" *ngIf="!isNochNichtGespielteRunde()" >
+  <div class="pad-1-top"></div>
+
+  <p-panel header="Angesagt" *ngIf="!isNochNichtGespielteRunde()" >
     <div class="p-grid p-dir-col">
       <div class="p-col">
         <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.reVonVorneHerein" 
           label="von vorneherein" binary="true" (onChange)="vonVorneHereinChanged(true)">
         </p-checkbox>
-        <p-dropdown class="p-col"  [options]="moeglicheReAnsagen" [(ngModel)]="aktuelleRunde.reAngesagt"></p-dropdown>
+        <p-dropdown class="p-col"  [options]="moeglicheReAnsagen" [(ngModel)]="aktuelleRunde.reAngesagt">
+            <ng-template let-item pTemplate="selectedItem"> 
+                <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+            </ng-template> 
+        </p-dropdown>
       </div>
       <div class="p-col">
         <p-checkbox  class="p-col" [(ngModel)]="aktuelleRunde.kontraVonVorneHerein" 
           label="von vorneherein" binary="true" (onChange)="vonVorneHereinChanged(false)">
         </p-checkbox>
-        <p-dropdown  class="p-col" [options]="moeglicheKontraAnsagen" [(ngModel)]="aktuelleRunde.kontraAngesagt"></p-dropdown>
+        <p-dropdown  class="p-col" [options]="moeglicheKontraAnsagen" [(ngModel)]="aktuelleRunde.kontraAngesagt">
+            <ng-template let-item pTemplate="selectedItem"> 
+                <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+            </ng-template> 
+        </p-dropdown>
       </div>
     </div>
-  </p-fieldset>
+  </p-panel>
 
-  <p-fieldset legend="Gespielt" *ngIf="!isNochNichtGespielteRunde()">
+  <div class="pad-1-top"></div>
+
+  <p-panel header="Gespielt" *ngIf="!isNochNichtGespielteRunde()">
       <div class="p-grid p-dir-col">
         <div class="p-col">
-          <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="aktuelleRunde.solo" optionLabel="name"></p-dropdown>
+          <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="aktuelleRunde.solo" optionLabel="name">
+              <ng-template let-item pTemplate="selectedItem"> 
+                  <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+              </ng-template> 
+          </p-dropdown>
           <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.armut" label="Armut" binary="true"></p-checkbox>  
           <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
         </div>
         <div class="p-col"> 
-          <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="aktuelleRunde.gespielt"></p-dropdown>
+          <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="aktuelleRunde.gespielt">
+              <ng-template let-item pTemplate="selectedItem"> 
+                  <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+              </ng-template> 
+          </p-dropdown>
           <span class="p-col">Extrapunkte: </span> <p-spinner [readonly]="true" size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
         </div>
-        <div class="p-col"> 
-          <p-button class="p-col" [disabled]="aktuelleRunde.gespielt === undefined" 
-            label="{{aktuelleRunde.isAktuelleRunde() ? 'Runde abrechnen' : 'Runde korrigieren'}}" 
-            styleClass="{{aktuelleRunde.isAktuelleRunde() ? 'ui-button-success' : 'ui-button-danger'}}"
-            (onClick)="rundeAbrechnen()" icon="pi pi-check" >
-          </p-button>
-        </div>
+        
     </div>
-  </p-fieldset>
+  </p-panel>
 
- 
+  <div class="pad-1-top"></div>
 
-</div>
+  <div > 
+    <p-button [disabled]="aktuelleRunde.gespielt === undefined" 
+      label="{{aktuelleRunde.isAktuelleRunde() ? 'Runde abrechnen' : 'Runde korrigieren'}}" 
+      styleClass="{{aktuelleRunde.isAktuelleRunde() ? 'ui-button-success' : 'ui-button-danger'}}"
+      (onClick)="rundeAbrechnen()" icon="pi pi-check" >
+    </p-button>
+  </div>
+
+

@@ -22,8 +22,22 @@
   padding-bottom: 2px; */
 }
 
+.pad-1-top {
+  padding-top: 0.5em;
+}
+
 .p-col {
   padding: 0.2em;
+}
+
+.dropdown-blue {
+  color: blue;
+  background: blueviolet;
+  
+} 
+
+.bold-text {
+  font-weight: bold;
 }
 
 .ui-fieldset .ui-fieldset-legend {
