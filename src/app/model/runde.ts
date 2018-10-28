@@ -1,9 +1,13 @@
 import { Solo } from "./solo";
 import { Spieler } from "./spieler";
+import { Spieltag } from "./spieltag";
+
+export const MAX_BOECKE = 3;
 
 export class Runde {
 
   constructor(
+    public spieltag: Spieltag,
     public nr: number,
     public spieler: Array<Spieler> = [],
     public geber?: Spieler,
@@ -28,6 +32,10 @@ export class Runde {
     public herzGehtRum = false,
     public ergebnis: number = -1) { }
 
+  public start() {
+    this.boeckeBeiBeginn = this.boecke;
+  }
+
   public isAktuelleRunde() {
     return this.ergebnis === -1 && this.geber;
   }
@@ -36,18 +44,33 @@ export class Runde {
     return this.ergebnis > -1;
   }
 
+  public addBock() {
+    if (this.boecke < MAX_BOECKE) {
+      this.boecke++;
+    } else {
+      this.spieltag.bock();
+    }
+  }
+
   public berechneErgebnis() {
     this.ergebnis = 0;
     // Boecke
     this.boecke = this.boeckeBeiBeginn;
     if (this.reAngesagt) {
-      this.boecke++;
+      this.addBock();
     }
     if (this.kontraAngesagt) {
-      this.boecke++;
+      this.addBock();
+    }
+    if (this.herzGehtRum) {
+      this.spieltag.boecke();
+    }
+    if (this.reAngesagt && this.kontraAngesagt) {
+      this.spieltag.boecke();
     }
     if (this.gespielt === 0) {
       // Gespaltener Arsch!?
+      this.spieltag.boecke();
       return this.ergebnis;
     }
     let gespieltePunkte = Math.abs(this.gespielt);
@@ -58,11 +81,13 @@ export class Runde {
     // Re un Kontra haben falsche Ansagen gemacht: gespaltener Arsch
     if (gespieltePunkte < this.reAngesagt && gespieltePunkte < this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
+      this.spieltag.boecke();
       return this.ergebnis;
     }
     // nichts angesagt und keine 6 oder besser: gespaltener Arsch
     if (gespieltePunkte >= 3 && !this.reAngesagt && !this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
+      this.spieltag.boecke();
       return this.ergebnis;
     }
     // Hat unter Berücksichtigung der Ansagen Re oder Kontra gewonnen?
@@ -129,6 +154,9 @@ export class Runde {
     // Böcke
     if (this.boecke) {
       this.ergebnis = this.boecke * 2 * this.ergebnis;
+    }
+    if (this.ergebnis === 0) {
+      this.spieltag.boecke();
     }
     return this.ergebnis;
   }

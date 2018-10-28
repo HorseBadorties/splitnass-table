@@ -1,4 +1,4 @@
-import { Runde } from "./runde";
+import { Runde, MAX_BOECKE } from "./runde";
 import { Spieler } from "./spieler";
 
 export class Spieltag {
@@ -16,7 +16,7 @@ export class Spieltag {
     this.spieler = spieler;
     this.anzahlRunden = anzahlRunden;
     for (let i = 0; i < this.anzahlRunden; i++) {
-      this.runden.push(new Runde(i + 1));
+      this.runden.push(new Runde(this, i + 1));
     }
     this.aktuelleRunde = this.runden[0];
     this.aktuelleRunde.geber = geber;
@@ -30,7 +30,40 @@ export class Spieltag {
       ? this.getNaechstenSpieler(this.aktuelleRunde.geber) : this.aktuelleRunde.geber;
     naechsteRunde.spieler = this.getSpieler(naechsteRunde.geber);
     naechsteRunde.aufspieler = this.getNaechstenSpieler(naechsteRunde.geber);
+    naechsteRunde.start();
     this.aktuelleRunde = naechsteRunde;
+  }
+
+  public bock() {
+    this.doBoecke(1);
+  }
+
+  public boecke() {
+    this.doBoecke(this.spieler.length);
+  }
+
+  private doBoecke(count: number) {
+    let nextBockableRunde = this.findNextBockableRunde();
+    if (!nextBockableRunde) {
+      return;
+    }
+    for (let i = count; i > 0; i--) {
+      nextBockableRunde.addBock();
+      nextBockableRunde = this.getNaechsteRunde(nextBockableRunde);
+      if (!nextBockableRunde) {
+        this.doBoecke(i - 1);
+        break;
+      }
+    }
+  }
+
+  private findNextBockableRunde() {
+    const indexOfAktuelleRunde = this.runden.indexOf(this.aktuelleRunde);
+    if (indexOfAktuelleRunde === this.runden.length - 1) {
+      return undefined;
+    } else {
+      return this.runden.slice(indexOfAktuelleRunde + 1).find(r => r.boecke < MAX_BOECKE - 1);
+    }
   }
 
   private getSpieler(geber: Spieler): Array<Spieler> {

@@ -176,7 +176,7 @@ export class RundeComponent implements OnInit {
     if (this.aktuelleRunde.isAktuelleRunde()) {
       result.push(`Geber: ${this.aktuelleRunde.geber.name}`);
       result.push(`Aufspielt: ${this.aktuelleRunde.aufspieler.name}`);
-      result.push(`Böcke: ${this.aktuelleRunde.boeckeBeiBeginn}`);
+      result.push(`Böcke: ${this.aktuelleRunde.boecke}`);
       if (this.getErgebnisVorherigeRunde()) {
         result.push(`Vorherige Runde: ${this.getErgebnisVorherigeRunde()}`);
       }
@@ -185,7 +185,7 @@ export class RundeComponent implements OnInit {
       result.push(`Ergebnis: ${this.aktuelleRunde.ergebnis}`);
       result.push(`Gewinner: ${this.getGewinner()}`);
     } else {
-      result.push(`Böcke: ${this.aktuelleRunde.boeckeBeiBeginn}`);
+      result.push(`Böcke: ${this.aktuelleRunde.boecke}`);
     }
     return result;
   }
