@@ -29,6 +29,10 @@ export class Solo {
         }
     }
 
+    toJSON() {
+      return this.id;
+    }
+
     toString() {
         return this.name;
     }

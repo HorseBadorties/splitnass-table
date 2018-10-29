@@ -7,10 +7,6 @@ export class Spieler  {
 
   constructor(public id: number, public name: string, public isAktiv = true) {}
 
-  toJSON() {
-      return this.id;
-  }
-
   toString() {
     return `${this.id} -  ${this.name}`;
   }

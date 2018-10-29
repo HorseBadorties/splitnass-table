@@ -5,6 +5,7 @@ import { Runde, Gespielt, Ansage } from "../model/runde";
 import { Spieltag } from "../model/spieltag";
 import { Solo } from "../model/solo";
 import { Spieler } from "../model/spieler";
+import { SocketService } from "../services/socket.service";
 
 @Component({
   selector: "app-runde",
@@ -25,6 +26,7 @@ export class RundeComponent implements OnInit {
 
   constructor(
     public spieltagService: SpieltagService,
+    public socketService: SocketService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService) {
       this.moeglicheErgebnisse = this.getMoeglicheErgebnisse();
@@ -33,6 +35,9 @@ export class RundeComponent implements OnInit {
       this.moeglicheSoli = this.getMoeglicheSoli();
      }
 
+  emitSomething() {
+    this.socketService.sendSpieltag(this.spieltag);
+  }
 
   vonVorneHereinChanged(re: boolean) {
     if (re && this.aktuelleRunde.reVonVorneHerein && this.aktuelleRunde.reAngesagt === Ansage.KeineAnsage) {
@@ -159,6 +164,10 @@ export class RundeComponent implements OnInit {
         this.setAktuelleRunde(spieltag.aktuelleRunde);
       }
     });
+    // this.socketService.onSpieltag().subscribe(spieltag => {
+    //   console.log("Spieltag update received");
+    //   this.messageService.add({severity: "info", summary: "Spieltag", detail: spieltag.runden[0].gewinner.toString()});
+    // });
   }
 
   getStatusDerRunde() {

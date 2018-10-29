@@ -3,6 +3,7 @@ import { Component, ViewChildren, QueryList, ElementRef, OnInit, AfterViewInit }
 import { Spieltag } from "../model/spieltag";
 import { Runde } from "../model/runde";
 import { SpieltagService } from "../services/spieltag.service";
+import { SocketService } from "../services/socket.service";
 
 @Component({
   selector: "app-rundenliste",
@@ -17,13 +18,19 @@ export class RundenlisteComponent implements OnInit, AfterViewInit {
   // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
   @ViewChildren("primerow", { read: ElementRef }) rowsPrime: QueryList<ElementRef>;
 
-  constructor(public spieltagService: SpieltagService) {}
+  constructor(
+    public spieltagService: SpieltagService,
+    public socketService: SocketService) {}
 
   ngOnInit() {
     this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => {
       this.spieltag = spieltag;
       this.calcDisplayedColumns();
       this.selectedRunde = spieltag.aktuelleRunde;
+    });
+    this.socketService.onSpieltag().subscribe(s => {
+      this.spieltag = s;
+      this.selectedRunde = s.aktuelleRunde;
     });
   }
 

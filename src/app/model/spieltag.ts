@@ -2,14 +2,44 @@ import { Runde, MAX_BOECKE } from "./runde";
 import { Spieler } from "./spieler";
 
 export class Spieltag {
-    constructor(
-        public key?: string,
-        public beginn?: Date,
-        public ende?: Date,
-        public anzahlRunden = 0,
-        public runden: Array<Runde> = [],
-        public aktuelleRunde?: Runde,
-        public spieler: Array<Spieler> = []) {}
+
+  public static fromJSON(jsonString: string) {
+    const result = new Spieltag();
+    const parsedJson = JSON.parse(jsonString, function replacer(key, value) {
+      return (key === "xyz") ? undefined : value;
+    });
+    result.key = parsedJson.key;
+    result.beginn = parsedJson.beginn ? new Date(parsedJson.beginn) : undefined;
+    result.ende = parsedJson.ende ? new Date(parsedJson.ende) : undefined;
+    result.spieler = [];
+    parsedJson.spieler.forEach(s => {
+      result.spieler.push(Spieler.get(s.id));
+    });
+    result.anzahlRunden = parsedJson.anzahlRunden;
+    result.runden = [];
+    parsedJson.runden.forEach(r => {
+      result.runden.push(Runde.fromJsonObject(r, result));
+    });
+    result.aktuelleRunde = result.runden.find(r => r.nr === parsedJson.aktuelleRunde.nr);
+    return result;
+  }
+
+  public static toJSON(spieltag: Spieltag) {
+    return JSON.stringify(spieltag, function replacer(key, value) {
+      if (this instanceof Runde) {
+        return (key === "spieltag") ? undefined : value;
+      } else return value;
+    });
+  }
+
+  constructor(
+      public key?: string,
+      public beginn?: Date,
+      public ende?: Date,
+      public anzahlRunden = 0,
+      public runden: Array<Runde> = [],
+      public aktuelleRunde?: Runde,
+      public spieler: Array<Spieler> = []) {}
 
   start(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler) {
     this.beginn = new Date();
@@ -99,3 +129,17 @@ export class Spieltag {
     return indexOfRunde < this.runden.length - 1 ? this.runden[indexOfRunde + 1] : undefined;
   }
 }
+
+const _spieler = [
+  new Spieler(1, "Claus"),
+  new Spieler(2, "Guido"),
+  new Spieler(3, "Levent"),
+  // new Spieler(4, "Ralf"),
+  new Spieler(5, "Torsten"),
+  new Spieler(9, "Thomas")];
+const sp = new Spieltag();
+sp.start(2, _spieler, _spieler[0]);
+console.log(sp);
+const json = Spieltag.toJSON(sp);
+const sp2 = Spieltag.fromJSON(json);
+console.log(sp2);

@@ -20,7 +20,7 @@ export class SpieltagService {
       // new Spieler(4, "Ralf"),
       new Spieler(5, "Torsten"),
       new Spieler(9, "Thomas")];
-    this.aktuellerSpieltag = this.startSpieltag(42, spieler, spieler[0]);
+    this.aktuellerSpieltag = this.startSpieltag(5, spieler, spieler[0]);
   }
 
   public getAktuellerSpieltag(): Observable<Spieltag> {
