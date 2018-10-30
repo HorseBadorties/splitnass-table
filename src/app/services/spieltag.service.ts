@@ -20,16 +20,17 @@ export class SpieltagService {
       // new Spieler(4, "Ralf"),
       new Spieler(5, "Torsten"),
       new Spieler(9, "Thomas")];
-    this.aktuellerSpieltag = this.startSpieltag(15, spieler, spieler[0]);
+    this.aktuellerSpieltag = this.startSpieltag(80, spieler, spieler[0]);
   }
 
   public getAktuellerSpieltag(): Observable<Spieltag> {
     return of(this.aktuellerSpieltag);
   }
 
-  private startSpieltag(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler): Spieltag {
+  public startSpieltag(anzahlRunden: number, spieler: Array<Spieler>, geber: Spieler): Spieltag {
     const result = new Spieltag();
     result.start(anzahlRunden, spieler, geber);
+    this.aktuellerSpieltag = result;
     return result;
   }
 }

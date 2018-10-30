@@ -15,6 +15,7 @@ app.get('/*', function(req, res) {
 });
 
 var io = require('socket.io')(http);
+var lastSpieltag = undefined;
 io.on('connect',socket => {
     console.log(`Client ${socket.client.conn.remoteAddress} connected`);
     socket.on("disconnect", () => {
@@ -22,11 +23,18 @@ io.on('connect',socket => {
     });
     socket.on("spieltag", data => {
         console.log(`sending updated spieltag`);
+        lastSpieltag = data;
         io.compress(true).emit("spieltag", data);
+    });
+    socket.on("lastSpieltag", _ => {
+        if (lastSpieltag) {
+            console.log(`sending last spieltag`);
+            socket.compress(true).emit("lastSpieltag", lastSpieltag);
+        }
     });
 });
 
 const port = process.env.PORT || 4200;
 http.listen(port);
-console.log(`server running on port ${port}`);
+console.log(`Splitnass server running on port ${port}`);
 

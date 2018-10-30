@@ -35,7 +35,15 @@ export class RundeComponent implements OnInit {
       this.moeglicheSoli = this.getMoeglicheSoli();
      }
 
-  emitSomething() {
+  newSpieltag() {
+    // get 5 random players
+    const spieler = Spieler.all
+      .map(a => ({sort: Math.random(), value: a}))
+      .sort((a, b) => a.sort - b.sort)
+      .map(a => a.value)
+      .slice(0, 5);
+    this.spieltag = this.spieltagService.startSpieltag(42, spieler, spieler[0]);
+    this.aktuelleRunde = this.spieltag.aktuelleRunde;
     this.socketService.sendSpieltag(this.spieltag);
   }
 
