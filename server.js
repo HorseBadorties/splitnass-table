@@ -1,21 +1,7 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
-const app = express();
-const forceSSL = function() {
-  return function (req, res, next) {
-    if (req.headers['x-forwarded-proto'] !== 'https') {
-      return res.redirect(
-       ['https://', req.get('Host'), req.url].join('')
-      );
-    }
-    next();
-  }
-}
-// Instruct the app
-// to use the forceSSL
-// middleware
-//.use(forceSSL());
+var app = express();
+var http = require('http').Server(app);
 
 // Run the app by serving the static files
 // in the dist directory
@@ -27,6 +13,18 @@ app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname + '/dist/splitnass-table/index.html'));
 });
 
-// Start the app by listening on the default
-// Heroku port
-app.listen(process.env.PORT || 4200);
+var io = require('socket.io')(http);
+io.on('connect',socket => {
+    console.log(`Client ${socket.client.conn.remoteAddress} connected`);
+    socket.on("disconnect", () => {
+        console.log(`Client ${socket.client.conn.remoteAddress} disconnected`);
+    });
+    socket.on("spieltag", data => {
+        console.log(`sending updated spieltag`);
+        io.compress(true).emit("spieltag", data);
+    });
+});
+
+const port = process.env.PORT || 4200;
+http.listen(port);
+console.log(`server running on port ${port}`);

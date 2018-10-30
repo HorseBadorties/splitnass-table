@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "ng build --aot --prod",
-    "start": "node dist/server.js"
+    "start": "node server.js"
   },
   "private": true,
   "dependencies": {

@@ -3,10 +3,9 @@ import { Observable } from "rxjs";
 
 import * as socketIo from "socket.io-client";
 import { Spieltag } from "../model/spieltag";
-import { Runde } from "../model/runde";
-import { Spieler } from "../model/spieler";
 
-const SERVER_URL = "http://localhost:8080";
+const port = 4200;
+const SERVER_URL = `http://localhost:${port}`;
 
 @Injectable({
   providedIn: "root"
@@ -20,6 +19,7 @@ export class SocketService {
 
   public initSocket(): void {
       this.socket = socketIo(SERVER_URL);
+      console.log(`connected to ${SERVER_URL}`);
   }
 
   public onSpieltag(): Observable<Spieltag> {
@@ -30,7 +30,6 @@ export class SocketService {
 
   public sendSpieltag(spieltag: Spieltag): void {
     const data = Spieltag.toJSON(spieltag);
-    console.log(data);
     this.socket.compress(true).emit("spieltag", data);
   }
 

@@ -130,16 +130,3 @@ export class Spieltag {
   }
 }
 
-const _spieler = [
-  new Spieler(1, "Claus"),
-  new Spieler(2, "Guido"),
-  new Spieler(3, "Levent"),
-  // new Spieler(4, "Ralf"),
-  new Spieler(5, "Torsten"),
-  new Spieler(9, "Thomas")];
-const sp = new Spieltag();
-sp.start(2, _spieler, _spieler[0]);
-console.log(sp);
-const json = Spieltag.toJSON(sp);
-const sp2 = Spieltag.fromJSON(json);
-console.log(sp2);
