@@ -4,8 +4,10 @@ import { Observable } from "rxjs";
 import * as socketIo from "socket.io-client";
 import { Spieltag } from "../model/spieltag";
 
-const port = 4200;
-const SERVER_URL = `http://localhost:${port}`;
+// import * as server from "../../../server";
+
+// const SERVER_URL = `http://localhost:${4200}`;
+const SERVER_URL = `https://splitnass-table.herokuapp.com`;
 
 @Injectable({
   providedIn: "root"

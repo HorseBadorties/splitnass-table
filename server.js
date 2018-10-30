@@ -3,6 +3,7 @@ const path = require('path');
 var app = express();
 var http = require('http').Server(app);
 
+
 // Run the app by serving the static files
 // in the dist directory
 app.use(express.static(__dirname + '/dist/splitnass-table'));
@@ -28,3 +29,4 @@ io.on('connect',socket => {
 const port = process.env.PORT || 4200;
 http.listen(port);
 console.log(`server running on port ${port}`);
+
