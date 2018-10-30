@@ -16,6 +16,26 @@
 
 </p-dialog>
 
+<p-dialog header="Neuen Spieltag starten" [(visible)]="displaySpieltagDialog" 
+  [modal]="true" [responsive]="true">
+       
+  <div class="p-col">
+    <span>Rundenanzahl: </span><p-spinner [min]="1" [max]="1000" size="2" [(ngModel)]="selectedRundenanzahl"></p-spinner>
+  </div>
+  <div class="p-col"></div>
+  <p-pickList [source]="moeglicheSpieler" [target]="selectedSpieler" sourceHeader="Spieler"
+   targetHeader="Erster ist Geber!" [responsive]="true" [showSourceControls]="false">
+    <ng-template let-spieler pTemplate="item">
+        <div>{{spieler.name}}</div>
+    </ng-template>
+</p-pickList>
+  <p-footer>
+      <p-button label="Ok" icon="pi pi-check" (onClick)="startNewSpieltag()" [disabled]="selectedSpieler.length < 4" ></p-button>
+      <p-button label="Cancel" icon="pi pi-close" (onClick)="displaySpieltagDialog=false"  class="ui-button-secondary"></p-button>
+  </p-footer>
+
+</p-dialog>
+
 <p-toolbar>
   <div class="ui-toolbar-group-left">
       <p-button icon="pi pi-angle-left" (click)="vorherigeRunde()"></p-button>

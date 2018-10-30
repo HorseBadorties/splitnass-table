@@ -17,7 +17,11 @@ export class RundeComponent implements OnInit {
   spieltag: Spieltag;
   aktuelleRunde: Runde;
   displayGewinnerDialog = false;
-  selectedGewinner: Spieler[];
+  selectedGewinner: Spieler[] = [];
+  displaySpieltagDialog = false;
+  moeglicheSpieler: Spieler[] = [];
+  selectedSpieler: Spieler[] = [];
+  selectedRundenanzahl: 42;
   moeglicheReAnsagen: SelectItem[];
   moeglicheKontraAnsagen: SelectItem[];
   moeglicheErgebnisse: SelectItem[];
@@ -36,15 +40,17 @@ export class RundeComponent implements OnInit {
      }
 
   newSpieltag() {
-    // get 5 random players
-    const spieler = Spieler.all
-      .map(a => ({sort: Math.random(), value: a}))
-      .sort((a, b) => a.sort - b.sort)
-      .map(a => a.value)
-      .slice(0, 5);
-    this.spieltag = this.spieltagService.startSpieltag(42, spieler, spieler[0]);
+    this.selectedSpieler = [];
+    this.moeglicheSpieler = Spieler.all.slice();
+    this.selectedRundenanzahl = 42;
+    this.displaySpieltagDialog = true;
+  }
+
+  startNewSpieltag() {
+    this.spieltag = this.spieltagService.startSpieltag(this.selectedRundenanzahl, this.selectedSpieler, this.selectedSpieler[0]);
     this.aktuelleRunde = this.spieltag.aktuelleRunde;
     this.socketService.sendSpieltag(this.spieltag);
+    this.displaySpieltagDialog = false;
   }
 
   vonVorneHereinChanged(re: boolean) {
