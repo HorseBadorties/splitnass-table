@@ -102,6 +102,7 @@ export class RundeComponent implements OnInit {
     // this.messageService.add({severity: "info", summary: "Ergebnis der Runde", detail: this.aktuelleRunde.ergebnis.toString()});
     this.spieltag.startNaechsteRunde();
     this.setAktuelleRunde(this.spieltag.aktuelleRunde);
+    this.socketService.sendSpieltag(this.spieltag);
   }
 
   confirmGespaltenerArsch() {
