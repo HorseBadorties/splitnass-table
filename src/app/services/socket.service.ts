@@ -42,19 +42,20 @@ export class SocketService {
     });
   }
 
-  public onLastSpieltag(): Observable<Spieltag> {
-    return new Observable<Spieltag>(observer => {
-      this.socket.on("lastSpieltag", (data: string) => observer.next(Spieltag.fromJSON(data)));
-    });
-  }
-
   public sendSpieltag(spieltag: Spieltag): void {
     const data = Spieltag.toJSON(spieltag);
     this.socket.compress(true).emit("spieltag", data);
   }
 
-  public requestLastSpieltag(): void {
+  public requestLastSpieltag(): Observable<Spieltag> {
+    const result = new Observable<Spieltag>(observer => {
+      this.socket.on("lastSpieltag", (data: string) => {
+        observer.next(Spieltag.fromJSON(data));
+        observer.unsubscribe();
+      });
+    });
     this.socket.emit("lastSpieltag", "");
+    return result;
   }
 
 }

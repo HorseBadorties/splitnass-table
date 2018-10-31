@@ -28,8 +28,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => this.setSpieltag(spieltag));
-    this.socketService.onLastSpieltag().subscribe(spieltag => this.setSpieltag(spieltag));
-    this.socketService.requestLastSpieltag();
+    this.socketService.requestLastSpieltag().subscribe(spieltag => this.setSpieltag(spieltag));
     this.socketService.onSpieltag().subscribe(spieltag => this.setSpieltag(spieltag));
   }
 

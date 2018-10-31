@@ -24,7 +24,8 @@
   </div>
   <div class="p-col"></div>
   <p-pickList [source]="moeglicheSpieler" [target]="selectedSpieler" sourceHeader="Mögliche Spieler"
-   targetHeader="Spieler in Sitzreihenfolge - Oberster ist erster Geber!" [responsive]="true" [showSourceControls]="false">
+   targetHeader="Spieler in Sitzreihenfolge - Oberster ist erster Geber!" [responsive]="true" 
+   [showSourceControls]="false" [showTargetControls]="false">
     <ng-template let-spieler pTemplate="item">
         <div>{{spieler.name}}</div>
     </ng-template>

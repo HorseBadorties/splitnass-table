@@ -17,9 +17,9 @@ app.get('/*', function(req, res) {
 var io = require('socket.io')(http);
 var lastSpieltag = undefined;
 io.on('connect',socket => {
-    console.log(`Client ${socket.client.conn.remoteAddress} connected`);
+    console.log(`Client ${socket.client.id} connected`);
     socket.on("disconnect", () => {
-        console.log(`Client ${socket.client.conn.remoteAddress} disconnected`);
+        console.log(`Client ${socket.client.id} disconnected`);
     });
     socket.on("spieltag", data => {
         console.log(`sending updated spieltag`);
@@ -29,7 +29,8 @@ io.on('connect',socket => {
     socket.on("lastSpieltag", _ => {
         if (lastSpieltag) {
             console.log(`sending last spieltag`);
-            socket.compress(true).emit("lastSpieltag", lastSpieltag);
+            socket.compress(true).emit("lastSpieltag", lastSpieltag);            
+            // setTimeout(() => socket.compress(true).emit("lastSpieltag", lastSpieltag), 3000);            
         }
     });
 });
