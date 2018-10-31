@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { SpieltagService } from "../services/spieltag.service";
-import { MessageService, ConfirmationService, SelectItem } from "primeng/api";
+import { MessageService, ConfirmationService, SelectItem, MenuItem } from "primeng/api";
 import { Runde, Gespielt, Ansage } from "../model/runde";
 import { Spieltag } from "../model/spieltag";
 import { Solo } from "../model/solo";
@@ -16,6 +16,8 @@ import { SocketService } from "../services/socket.service";
 export class RundeComponent implements OnInit {
   spieltag: Spieltag;
   aktuelleRunde: Runde;
+  displayMenu = false;
+  menuItems: MenuItem[];
   displayGewinnerDialog = false;
   selectedGewinner: Spieler[] = [];
   displaySpieltagDialog = false;
@@ -40,6 +42,7 @@ export class RundeComponent implements OnInit {
      }
 
   newSpieltag() {
+    this.displayMenu = false;
     this.selectedSpieler = [];
     this.moeglicheSpieler = Spieler.all.slice();
     this.selectedRundenanzahl = 42;
@@ -171,6 +174,7 @@ export class RundeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initMenu();
     this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => {
       this.spieltag = spieltag;
       if (this.spieltagService.selectedRunde) {
@@ -183,6 +187,25 @@ export class RundeComponent implements OnInit {
     //   console.log("Spieltag update received");
     //   this.messageService.add({severity: "info", summary: "Spieltag", detail: spieltag.runden[0].gewinner.toString()});
     // });
+  }
+
+  private initMenu() {
+    this.menuItems = [
+      {
+          label: "Runde",
+          icon: "pi pi-pw pi-file"
+      },
+      {
+          label: "Spieltag",
+          icon: "pi pi-fw pi-pencil",
+          items: [
+              {label: "Neuer Spieltag", icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()}
+          ]
+      },
+      {
+          label: "Settings",
+          icon: "pi pi-fw pi-cog",
+      }];
   }
 
   getStatusDerRunde() {

@@ -18,6 +18,9 @@ import { MessageModule } from "primeng/message";
 import { PanelModule } from "primeng/panel";
 import { PickListModule } from "primeng/picklist";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { SidebarModule } from "primeng/sidebar";
+import { PanelMenuModule } from "primeng/panelmenu";
+import { MenuItem } from "primeng/api";
 
 import { AppComponent } from "./app.component";
 import { RundeComponent } from "./runde/runde.component";
@@ -51,6 +54,8 @@ import { AppRoutingModule } from "./app-routing.module";
     PanelModule,
     PickListModule,
     ProgressSpinnerModule,
+    SidebarModule,
+    PanelMenuModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]
