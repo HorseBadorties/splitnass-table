@@ -23,8 +23,8 @@
     <span>Rundenanzahl: </span><p-spinner [min]="1" [max]="1000" size="2" [(ngModel)]="selectedRundenanzahl"></p-spinner>
   </div>
   <div class="p-col"></div>
-  <p-pickList [source]="moeglicheSpieler" [target]="selectedSpieler" sourceHeader="Spieler"
-   targetHeader="Erster ist Geber!" [responsive]="true" [showSourceControls]="false">
+  <p-pickList [source]="moeglicheSpieler" [target]="selectedSpieler" sourceHeader="Mögliche Spieler"
+   targetHeader="Spieler in Sitzreihenfolge - Oberster ist erster Geber!" [responsive]="true" [showSourceControls]="false">
     <ng-template let-spieler pTemplate="item">
         <div>{{spieler.name}}</div>
     </ng-template>
