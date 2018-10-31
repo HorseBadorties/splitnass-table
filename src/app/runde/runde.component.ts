@@ -117,7 +117,6 @@ export class RundeComponent implements OnInit {
   rundeAbgerechnet() {
     this.displayGewinnerDialog = false;
     this.aktuelleRunde.gewinner = this.selectedGewinner;
-    // this.messageService.add({severity: "info", summary: "Ergebnis der Runde", detail: this.aktuelleRunde.ergebnis.toString()});
     this.spieltag.startNaechsteRunde();
     this.setAktuelleRunde(this.spieltag.aktuelleRunde);
     this.socketService.sendSpieltag(this.spieltag);
