@@ -14,7 +14,7 @@ export class RundenlisteComponent implements OnInit, AfterViewInit {
 
   spieltag: Spieltag;
   selectedRunde: Runde;
-  displayMenu: false;
+  displayMenu = false;
   displayedColumns: Column[];
   // https://netbasal.com/understanding-viewchildren-contentchildren-and-querylist-in-angular-896b0c689f6e
   @ViewChildren("primerow", { read: ElementRef }) rowsPrime: QueryList<ElementRef>;
