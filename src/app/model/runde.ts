@@ -19,6 +19,8 @@ export class Runde {
   constructor(
     public spieltag: Spieltag,
     public nr: number,
+    public isGestartet = false,
+    public isBeendet = false,
     public spieler: Array<Spieler> = [],
     public geber?: Spieler,
     public aufspieler?: Spieler,
@@ -44,14 +46,15 @@ export class Runde {
 
   public start() {
     this.boeckeBeiBeginn = this.boecke;
+    this.isGestartet = true;
   }
 
   public isAktuelleRunde() {
-    return this.ergebnis === -1 && this.geber;
+    return this.isGestartet && !this.isBeendet;
   }
 
   public isGespielteRunde() {
-    return this.ergebnis > -1;
+    return this.isBeendet;
   }
 
   public addBock() {

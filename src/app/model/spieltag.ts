@@ -52,6 +52,7 @@ export class Spieltag {
     this.aktuelleRunde.geber = geber;
     this.aktuelleRunde.spieler = this.getSpieler(geber);
     this.aktuelleRunde.aufspieler = this.getNaechstenSpieler(geber);
+    this.aktuelleRunde.start();
   }
 
   startNaechsteRunde() {
@@ -61,6 +62,7 @@ export class Spieltag {
     naechsteRunde.spieler = this.getSpieler(naechsteRunde.geber);
     naechsteRunde.aufspieler = this.getNaechstenSpieler(naechsteRunde.geber);
     naechsteRunde.start();
+    this.aktuelleRunde.isBeendet = true;
     this.aktuelleRunde = naechsteRunde;
   }
 
