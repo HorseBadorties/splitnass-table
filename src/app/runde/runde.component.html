@@ -100,35 +100,35 @@
 <div style="padding-top: 0.2em;"></div>
 
 <p-panel header="Gespielt" *ngIf="!isNochNichtGespielteRunde()">
-    <div class="p-grid p-dir-col">
-      <div class="p-col"> 
-          <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.armut" label="Armut" binary="true"></p-checkbox>  
-          <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
-          <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
-      </div>  
-      <div class="p-col">
-        <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="aktuelleRunde.solo" optionLabel="name">
-            <ng-template let-item pTemplate="selectedItem"> 
-                <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
-            </ng-template> 
-        </p-dropdown>
-        <span class="p-col">Extrapunkte: </span> <p-spinner [readonly]="true" size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
-      </div>
-      <div class="p-col"> 
-        <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="aktuelleRunde.gespielt">
-            <ng-template let-item pTemplate="selectedItem"> 
-                <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
-            </ng-template> 
-        </p-dropdown>
-        <p-button class="p-col" [disabled]="aktuelleRunde.gespielt === undefined" 
-          label="{{aktuelleRunde.isAktuelleRunde() ? 'Runde abrechnen' : 'Runde korrigieren'}}" 
-          styleClass="{{aktuelleRunde.isAktuelleRunde() ? 'ui-button-success' : 'ui-button-danger'}}"
-          (onClick)="rundeAbrechnen()">
-        </p-button>
-      </div>
+  <div class="p-grid p-dir-col">
+    <div class="p-col"> 
+      <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.armut" label="Armut" binary="true"></p-checkbox>  
+      <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
+      <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
+    </div>  
+    <div class="p-col">
+      <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="aktuelleRunde.solo" optionLabel="name">
+        <ng-template let-item pTemplate="selectedItem"> 
+          <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+        </ng-template> 
+      </p-dropdown>
+      <span class="p-col">Extrapunkte: </span> <p-spinner [readonly]="true" size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
+    </div>
+    <div class="p-col"> 
+      <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="aktuelleRunde.gespielt">
+        <ng-template let-item pTemplate="selectedItem"> 
+          <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
+        </ng-template> 
+      </p-dropdown>
       
+    </div>
   </div>
 </p-panel>
 
 
-
+<p-button *ngIf="!isNochNichtGespielteRunde()" class="pad-half" 
+  [disabled]="aktuelleRunde.gespielt === undefined" 
+  label="{{aktuelleRunde.isAktuelleRunde() ? 'Runde abrechnen' : 'Runde korrigieren'}}" 
+  styleClass="{{aktuelleRunde.isAktuelleRunde() ? 'ui-button-success' : 'ui-button-danger'}}"
+  (onClick)="rundeAbrechnen()">
+</p-button>
