@@ -93,6 +93,7 @@ export class RundeComponent implements OnInit {
   private setAktuelleRunde(r: Runde) {
     this.aktuelleRunde = r;
     this.selectedGewinner = this.aktuelleRunde.gewinner;
+    this.menuItemById(MenuItemId.HerzGehtRum).disabled = r.herzGehtRum;
   }
 
   rundeAbrechnen() {
@@ -183,29 +184,56 @@ export class RundeComponent implements OnInit {
         this.setAktuelleRunde(spieltag.aktuelleRunde);
       }
     });
-    // this.socketService.onSpieltag().subscribe(spieltag => {
-    //   console.log("Spieltag update received");
-    //   this.messageService.add({severity: "info", summary: "Spieltag", detail: spieltag.runden[0].gewinner.toString()});
-    // });
   }
 
   private initMenu() {
     this.menuItems = [
       {
-          label: "Runde",
-          icon: "pi pi-pw pi-file"
+          label: "Runde", id: MenuItemId.Runde, icon: "pi pi-pw pi-file",
+          items: [
+            {label: "Herz geht rum (Böcke)", id: MenuItemId.HerzGehtRum, icon: "pi pi-fw pi-bell",
+              command: _ => this.aktuelleRunde.herzGehtRum = true},
+            {label: "Berechnung prüfen", id: MenuItemId.BerechnungPruefen,
+              icon: "pi pi-fw pi-check", command: _ => this.showToDoMessage("Berechnung prüfen")},
+            {label: "Ergebnis korrigieren", id: MenuItemId.ErgebnisKorrigieren,
+              icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Ergebnis korrigieren")},
+            {label: "Anzahl Böcke korrigieren", id: MenuItemId.BoeckeKorrigieren,
+              icon: "pi pi-fw pi-pencil", command: _ => this.showToDoMessage("Anzahl Böcke korrigieren")}
+        ]
       },
       {
-          label: "Spieltag",
-          icon: "pi pi-fw pi-pencil",
+          label: "Spieltag", id: MenuItemId.Spieltag, icon: "pi pi-fw pi-calendar",
           items: [
-              {label: "Neuer Spieltag", icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()}
+              {label: "Neuer Spieltag", id: MenuItemId.NeuerSpieltag,
+                icon: "pi pi-fw pi-calendar-plus", command: _ => this.newSpieltag()},
+              {label: "Spieler steigt ein", id: MenuItemId.SpielerRein,
+                icon: "pi pi-fw pi-user-plus", command: _ => this.showToDoMessage("Spieler steigt ein")},
+              {label: "Spieler steigt aus", id: MenuItemId.SpielerRaus,
+                icon: "pi pi-fw pi-user-minus", command: _ => this.showToDoMessage("Spieler steigt aus")},
+              {label: "Setze Rundenanzahl", id: MenuItemId.Rundenzahl,
+                icon: "pi pi-fw pi-sort", command: _ => this.showToDoMessage("Setze Rundenanzahl")}
           ]
       },
       {
-          label: "Settings",
-          icon: "pi pi-fw pi-cog",
+          label: "Settings", id: MenuItemId.Settings, icon: "pi pi-fw pi-cog",
       }];
+  }
+
+  private menuItemById(id: MenuItemId): MenuItem {
+    function flatten(items, result) {
+      return items.reduce((acc, val) => {
+        acc.push(val);
+        if (val.items) acc.concat(flatten(val.items, acc));
+        return acc;
+      }, result);
+    }
+    return flatten(this.menuItems, []).find(item => item.id === id);
+  }
+
+
+  private showToDoMessage(message: string) {
+    this.displayMenu = false;
+    this.messageService.add({severity: "info", summary: "ToDo", detail: message});
   }
 
   getStatusDerRunde() {
@@ -258,3 +286,20 @@ export class RundeComponent implements OnInit {
   }
 
 }
+
+enum MenuItemId {
+  Runde = "Runde",
+  HerzGehtRum = "HerzGehtRum",
+  BerechnungPruefen = "BerechnungPruefen",
+  ErgebnisKorrigieren = "ErgebnisKorrigieren",
+  BoeckeKorrigieren = "BoeckeKorrigieren",
+
+  Spieltag = "Spieltag",
+  NeuerSpieltag = "NeuerSpieltag",
+  SpielerRein = "SpielerRein",
+  SpielerRaus = "SpielerRaus",
+  Rundenzahl = "Rundenzahl",
+
+  Settings = "Settings"
+}
+

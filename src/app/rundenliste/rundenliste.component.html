@@ -1,10 +1,13 @@
 <p-toolbar>
   <div class="ui-toolbar-group-left">   
+    <p-button icon="pi pi-pencil" routerLink="/runde"></p-button>
+    <span class="box"> </span>
+    <span class="box"> </span>
     <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
-    <p-progressSpinner *ngIf="!spieltag" [style]="{width: '30px', height: '30px'}" ></p-progressSpinner>
+    <p-progressSpinner *ngIf="!spieltag" [style]="{width: '20px', height: '20px'}" ></p-progressSpinner>
   </div>
   <div class="ui-toolbar-group-right">
-      <p-button icon="pi pi-pencil" routerLink="/runde"></p-button>
+    <p-button icon="pi pi-ellipsis-v" styleClass="ui-button-secondary" (click)="displayMenu = true"></p-button>
   </div>
 </p-toolbar>
 
