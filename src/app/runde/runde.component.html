@@ -76,7 +76,7 @@
 <div style="padding-top: 0.2em;"></div>
 
 <p-panel *ngIf="!isNochNichtGespielteRunde()" >
-  <p-header>Angesagt</p-header>
+  <p-header><span>Angesagt</span> </p-header>
   <div class="p-grid p-dir-col">
     <div class="p-col">
       <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.reVonVorneHerein" 
@@ -106,12 +106,11 @@
 <div style="padding-top: 0.2em;"></div>
 
 <p-panel *ngIf="!isNochNichtGespielteRunde()">
-  <p-header>Gespielt</p-header>
+  <p-header><span>Gespielt</span></p-header>
   <div class="p-grid p-dir-col">
     <div class="p-col"> 
       <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.armut" label="Armut" binary="true"></p-checkbox>  
-      <p-checkbox class="pad-left" [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
-      <p-checkbox class="pad-left" [(ngModel)]="aktuelleRunde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
+      <p-checkbox class="pad-left-1" [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
     </div>  
     <div class="p-col">
       <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="aktuelleRunde.solo" optionLabel="name">
@@ -119,7 +118,7 @@
           <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
         </ng-template> 
       </p-dropdown>
-      <span class="pad-left">Extrapunkte: </span>
+      <span class="pad-left-1">Extrapunkte: </span>
       <input type="text" pInputText [(ngModel)]="aktuelleRunde.extrapunkte" disabled="true"> 
       <p-button icon="pi pi-caret-down" (click)="aktuelleRunde.extrapunkte = aktuelleRunde.extrapunkte - 1"></p-button>
       <p-button icon="pi pi-caret-up" (click)="aktuelleRunde.extrapunkte = aktuelleRunde.extrapunkte + 1"></p-button>
@@ -130,7 +129,7 @@
           <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
         </ng-template> 
       </p-dropdown>
-      
+      <p-checkbox class="pad-left-1" [(ngModel)]="aktuelleRunde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
     </div>
   </div>
 </p-panel>
