@@ -93,7 +93,6 @@ export class RundeComponent implements OnInit {
   private setAktuelleRunde(r: Runde) {
     this.aktuelleRunde = r;
     this.selectedGewinner = this.aktuelleRunde.gewinner;
-    this.menuItemById(MenuItemId.HerzGehtRum).disabled = r.herzGehtRum;
   }
 
   rundeAbrechnen() {
@@ -190,8 +189,6 @@ export class RundeComponent implements OnInit {
       {
           label: "Runde", id: MenuItemId.Runde, icon: "pi pi-pw pi-file",
           items: [
-            {label: "Herz geht rum (Böcke)", id: MenuItemId.HerzGehtRum, icon: "pi pi-fw pi-bell",
-              command: _ => this.aktuelleRunde.herzGehtRum = true},
             {label: "Berechnung prüfen", id: MenuItemId.BerechnungPruefen,
               icon: "pi pi-fw pi-check", command: _ => this.showToDoMessage("Berechnung prüfen")},
             {label: "Ergebnis korrigieren", id: MenuItemId.ErgebnisKorrigieren,
@@ -288,7 +285,6 @@ export class RundeComponent implements OnInit {
 
 enum MenuItemId {
   Runde = "Runde",
-  HerzGehtRum = "HerzGehtRum",
   BerechnungPruefen = "BerechnungPruefen",
   ErgebnisKorrigieren = "ErgebnisKorrigieren",
   BoeckeKorrigieren = "BoeckeKorrigieren",

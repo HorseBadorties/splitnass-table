@@ -54,9 +54,7 @@
     <span class="box"> </span>
     <p-button icon="pi pi-angle-left" (click)="vorherigeRunde()" [disabled]="aktuelleRunde.nr === 1"></p-button>
     <span class="box"> </span>
-    <p-button icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="aktuelleRunde.nr === spieltag.runden.length"></p-button>
-    <!-- Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}}) -->
-    <span class="white">Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})</span>
+    <p-button icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="aktuelleRunde.nr === spieltag.runden.length"></p-button>    
      
   </div>
   <div class="ui-toolbar-group-right">
@@ -66,14 +64,16 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel >
-  <span *ngFor="let info of getRundenInfo()" style="padding-right: 1em;">{{info}}</span> 
-  <div *ngIf="!isNochNichtGespielteRunde()" >{{getPunktestand()}}</div>
+<p-panel>
+  <p-header>Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})</p-header>
+  <span *ngFor="let info of getRundenInfo()" class="box">{{info}}</span> 
+  <div *ngIf="!isNochNichtGespielteRunde()" class="box">{{getPunktestand()}}</div>
 </p-panel>
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel header="Angesagt" *ngIf="!isNochNichtGespielteRunde()" >
+<p-panel *ngIf="!isNochNichtGespielteRunde()" >
+  <p-header>Angesagt</p-header>
   <div class="p-grid p-dir-col">
     <div class="p-col">
       <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.reVonVorneHerein" 
@@ -102,7 +102,8 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel header="Gespielt" *ngIf="!isNochNichtGespielteRunde()">
+<p-panel *ngIf="!isNochNichtGespielteRunde()">
+  <p-header>Gespielt</p-header>
   <div class="p-grid p-dir-col">
     <div class="p-col"> 
       <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.armut" label="Armut" binary="true"></p-checkbox>  
