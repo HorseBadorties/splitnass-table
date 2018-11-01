@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { SpieltagService } from "../services/spieltag.service";
 import { MessageService, ConfirmationService, SelectItem, MenuItem } from "primeng/api";
 import { Runde, Gespielt, Ansage } from "../model/runde";
@@ -6,6 +6,7 @@ import { Spieltag } from "../model/spieltag";
 import { Solo } from "../model/solo";
 import { Spieler } from "../model/spieler";
 import { SocketService } from "../services/socket.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-runde",
@@ -13,7 +14,9 @@ import { SocketService } from "../services/socket.service";
   styleUrls: ["./runde.component.css"],
   providers: [MessageService, ConfirmationService]
 })
-export class RundeComponent implements OnInit {
+export class RundeComponent implements OnInit, OnDestroy {
+  spieltagServiceSubscribtion: Subscription;
+  socketServiceSubscribtion: Subscription;
   spieltag: Spieltag;
   aktuelleRunde: Runde;
   displayMenu = false;
@@ -174,7 +177,7 @@ export class RundeComponent implements OnInit {
 
   ngOnInit() {
     this.initMenu();
-    this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => {
+    this.spieltagServiceSubscribtion = this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => {
       this.spieltag = spieltag;
       if (this.spieltagService.selectedRunde) {
         this.setAktuelleRunde(this.spieltagService.selectedRunde);
@@ -182,6 +185,15 @@ export class RundeComponent implements OnInit {
         this.setAktuelleRunde(spieltag.aktuelleRunde);
       }
     });
+  }
+
+  ngOnDestroy() {
+    if (this.spieltagServiceSubscribtion) {
+      this.spieltagServiceSubscribtion.unsubscribe();
+    }
+    if (this.socketServiceSubscribtion) {
+      this.socketServiceSubscribtion.unsubscribe();
+    }
   }
 
   private initMenu() {

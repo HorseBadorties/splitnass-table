@@ -1,4 +1,5 @@
-import { Component, ViewChildren, QueryList, ElementRef, OnInit, AfterViewInit } from "@angular/core";
+import { Component, ViewChildren, QueryList, ElementRef, OnInit, AfterViewInit, OnDestroy } from "@angular/core";
+import { Subscription  } from "rxjs";
 
 import { Spieltag } from "../model/spieltag";
 import { Runde } from "../model/runde";
@@ -10,8 +11,9 @@ import { SocketService } from "../services/socket.service";
   templateUrl: "./rundenliste.component.html",
   styleUrls: ["./rundenliste.component.css"]
 })
-export class RundenlisteComponent implements OnInit, AfterViewInit {
+export class RundenlisteComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  subscribtion: Subscription;
   spieltag: Spieltag;
   selectedRunde: Runde;
   displayMenu = false;
@@ -29,13 +31,19 @@ export class RundenlisteComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => this.setSpieltag(spieltag));
-    this.socketService.updatedSpieltag.subscribe(spieltag => this.setSpieltag(spieltag));
+    this.subscribtion = this.socketService.updatedSpieltag.subscribe(spieltag => this.setSpieltag(spieltag));
+  }
+
+  ngOnDestroy() {
+    if (this.subscribtion) {
+      this.subscribtion.unsubscribe();
+    }
   }
 
   private setSpieltag(spieltag: Spieltag) {
     this.spieltag = spieltag;
     if (spieltag) {
-      this.calcDisplayedColumns();
+      this.calcDisplayedColumns(spieltag);
       this.selectedRunde = spieltag.aktuelleRunde;
       this.scrollToRunde(this.selectedRunde);
     }
@@ -47,9 +55,9 @@ export class RundenlisteComponent implements OnInit, AfterViewInit {
     }
    }
 
-  private calcDisplayedColumns() {
+  private calcDisplayedColumns(s: Spieltag) {
     const result = [new Column("nr", "Runde", "60%")];
-    this.spieltag.spieler.forEach(spieler => result.push(new Column(spieler.id.toString(), spieler.name, "100%")));
+    s.spieler.forEach(spieler => result.push(new Column(spieler.id.toString(), spieler.name, "100%")));
     result.push(new Column("boecke", "Böcke", "60%"));
     result.push(new Column("ergebnis", "Punkte", "60%"));
     this.displayedColumns = result;
@@ -109,7 +117,9 @@ export class RundenlisteComponent implements OnInit, AfterViewInit {
   }
 
   private scrollToNr(nr: string) {
-    this.scrollTo(this.rowsPrime.find(r => r.nativeElement.getAttribute("nr") === nr));
+    if (this.rowsPrime) {
+      this.scrollTo(this.rowsPrime.find(r => r.nativeElement.getAttribute("nr") === nr));
+    }
   }
 
   private scrollTo(row: ElementRef) {
