@@ -55,17 +55,20 @@
     <p-button icon="pi pi-angle-left" (click)="vorherigeRunde()" [disabled]="aktuelleRunde.nr === 1"></p-button>
     <span class="box"> </span>
     <p-button icon="pi pi-angle-right" (click)="naechsteRunde()" [disabled]="aktuelleRunde.nr === spieltag.runden.length"></p-button>
+    <!-- Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}}) -->
+    <span class="white">Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})</span>
+     
   </div>
   <div class="ui-toolbar-group-right">
-    <p-button icon="pi pi-ellipsis-v" styleClass="ui-button-secondary" (click)="displayMenu = true"></p-button>
+    <p-button icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
   </div>
 </p-toolbar>
 
 <div style="padding-top: 0.2em;"></div>
 
-<p-panel header="Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})">
-  <span *ngFor="let info of getRundenInfo()"  class="box">{{info}}</span> 
-  <div *ngIf="!isNochNichtGespielteRunde()" class="box">{{getPunktestand()}}</div>
+<p-panel >
+  <span *ngFor="let info of getRundenInfo()" style="padding-right: 1em;">{{info}}</span> 
+  <div *ngIf="!isNochNichtGespielteRunde()" >{{getPunktestand()}}</div>
 </p-panel>
 
 <div style="padding-top: 0.2em;"></div>
@@ -76,7 +79,7 @@
       <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.reVonVorneHerein" 
         label="von vorneherein" binary="true" (onChange)="vonVorneHereinChanged(true)">
       </p-checkbox>
-      <p-dropdown class="p-col"  [options]="moeglicheReAnsagen" 
+      <p-dropdown class="p-col"  [options]="moeglicheReAnsagen" [style]="{'width':'200px'}"
         [(ngModel)]="aktuelleRunde.reAngesagt" (onChange)="angesagtChanged(true)">
           <ng-template let-item pTemplate="selectedItem"> 
               <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
@@ -87,7 +90,7 @@
       <p-checkbox  class="p-col" [(ngModel)]="aktuelleRunde.kontraVonVorneHerein" 
         label="von vorneherein" binary="true" (onChange)="vonVorneHereinChanged(false)">
       </p-checkbox>
-      <p-dropdown  class="p-col" [options]="moeglicheKontraAnsagen" 
+      <p-dropdown  class="p-col" [options]="moeglicheKontraAnsagen" [style]="{'width':'200px'}"
         [(ngModel)]="aktuelleRunde.kontraAngesagt" (onChange)="angesagtChanged(false)">
           <ng-template let-item pTemplate="selectedItem"> 
               <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
@@ -103,8 +106,8 @@
   <div class="p-grid p-dir-col">
     <div class="p-col"> 
       <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.armut" label="Armut" binary="true"></p-checkbox>  
-      <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
-      <p-checkbox class="p-col" [(ngModel)]="aktuelleRunde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
+      <p-checkbox class="pad-left" [(ngModel)]="aktuelleRunde.gegenDieSau" label="gegen die Sau" binary="true"></p-checkbox>
+      <p-checkbox class="pad-left" [(ngModel)]="aktuelleRunde.herzGehtRum" label="Herz geht rum" binary="true"></p-checkbox>
     </div>  
     <div class="p-col">
       <p-dropdown class="p-col" [options]="moeglicheSoli" [(ngModel)]="aktuelleRunde.solo" optionLabel="name">
@@ -112,7 +115,10 @@
           <span class="{{!item.label.startsWith('<') ? 'bold-text' : ''}}">{{item.label}}</span>
         </ng-template> 
       </p-dropdown>
-      <span class="p-col">Extrapunkte: </span> <p-spinner [readonly]="true" size="1" [(ngModel)]="aktuelleRunde.extrapunkte"></p-spinner>
+      <span class="pad-left">Extrapunkte: </span>
+      <input type="text" pInputText [(ngModel)]="aktuelleRunde.extrapunkte" disabled="true"> 
+      <p-button icon="pi pi-caret-down" (click)="aktuelleRunde.extrapunkte = aktuelleRunde.extrapunkte - 1"></p-button>
+      <p-button icon="pi pi-caret-up" (click)="aktuelleRunde.extrapunkte = aktuelleRunde.extrapunkte + 1"></p-button>
     </div>
     <div class="p-col"> 
       <p-dropdown class="p-col" [options]="moeglicheErgebnisse" [(ngModel)]="aktuelleRunde.gespielt">
