@@ -246,11 +246,11 @@ export class RundeComponent implements OnInit, OnDestroy {
 
   getStatusDerRunde() {
     if (this.aktuelleRunde.isAktuelleRunde()) {
-      return "aktuell laufende Runde";
+      return "laufende Runde";
     } else if (this.aktuelleRunde.isGespielteRunde()) {
-      return "bereits gespielte Runde";
+      return "gespielte Runde";
     } else {
-      return "noch nicht begonnene Runde";
+      return "zu spielende Runde";
     }
   }
 

@@ -50,12 +50,12 @@
 <p-toolbar>
   <div class="ui-toolbar-group-left">
     <p-button icon="pi pi-table" routerLink="/rundenliste"></p-button>
-    <p-button style="padding-left: 3em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" 
+    <!-- <p-button style="padding-left: 3em;" icon="pi pi-angle-left" (click)="vorherigeRunde()" 
       [disabled]="aktuelleRunde.nr === 1">
     </p-button>
     <p-button style="padding-left: .5em;" icon="pi pi-angle-right" (click)="naechsteRunde()" 
       [disabled]="aktuelleRunde.nr === spieltag.runden.length">
-    </p-button>    
+    </p-button>     -->
      
   </div>
   <div class="ui-toolbar-group-right">
@@ -66,7 +66,15 @@
 <div style="padding-top: 0.2em;"></div>
 
 <p-panel>
-  <p-header>Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})</p-header>
+  <p-header>
+      <p-button icon="pi pi-angle-left" (click)="vorherigeRunde()" 
+      [disabled]="aktuelleRunde.nr === 1">
+    </p-button>
+    <p-button icon="pi pi-angle-right" (click)="naechsteRunde()" 
+      [disabled]="aktuelleRunde.nr === spieltag.runden.length">
+    </p-button>    
+    Runde Nr. {{aktuelleRunde.nr}} von {{spieltag.anzahlRunden}} ({{getStatusDerRunde()}})
+  </p-header>
   <span *ngFor="let info of getRundenInfo()" class="box">{{info}}</span> 
   <div *ngIf="!isNochNichtGespielteRunde()" class="box">{{getPunktestand()}}</div>
 </p-panel>
