@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, BehaviorSubject  } from "rxjs";
 
 import * as socketIo from "socket.io-client";
 import { Spieltag } from "../model/spieltag";
@@ -12,34 +12,10 @@ const REMOTE_SERVER_URL = `https://splitnass-table.herokuapp.com`;
 })
 export class SocketService {
   private socket;
+  public updatedSpieltag = new BehaviorSubject(undefined);
 
   constructor() {
     this.initSocket();
-  }
-
-  public initSocket(): void {
-      this.socket = socketIo(LOCAL_SERVER_URL);
-      this.socket.on("connect", _ => console.log(`connected to ${LOCAL_SERVER_URL}`));
-      this.socket.on("connect_error", _ => this.connectToRemoteServer());
-      this.socket.on("connect_timeout", _ => this.connectToRemoteServer());
-  }
-
-  private connectToRemoteServer() {
-    if (this.socket) {
-      this.socket.close();
-    }
-    this.socket = socketIo(REMOTE_SERVER_URL);
-    this.socket.on("connect", _ => console.log(`connected to ${REMOTE_SERVER_URL}`));
-  }
-
-  public isConnected() {
-    return this.socket && this.socket.connected;
-  }
-
-  public onSpieltag(): Observable<Spieltag> {
-    return new Observable<Spieltag>(observer => {
-      this.socket.on("spieltag", (data: string) => observer.next(Spieltag.fromJSON(data)));
-    });
   }
 
   public sendSpieltag(spieltag: Spieltag): void {
@@ -47,15 +23,37 @@ export class SocketService {
     this.socket.compress(true).emit("spieltag", data);
   }
 
-  public requestLastSpieltag(): Observable<Spieltag> {
-    const result = new Observable<Spieltag>(observer => {
-      this.socket.on("lastSpieltag", (data: string) => {
-        observer.next(Spieltag.fromJSON(data));
-        observer.unsubscribe();
-      });
+  private initSocket(): void {
+      this.socket = socketIo(LOCAL_SERVER_URL);
+      this.socket.on("connect", _ => this.onConnect(LOCAL_SERVER_URL));
+      this.socket.on("connect_error", _ => this.connectToRemoteServer());
+      this.socket.on("connect_timeout", _ => this.connectToRemoteServer());
+  }
+
+  private onConnect(url: string) {
+    console.log(`connected to ${url}`);
+    this.socket.on("spieltag", (data: string) => {
+      console.log(`sending spieltag`);
+      this.updatedSpieltag.next(Spieltag.fromJSON(data));
+    });
+    this.requestLastSpieltag();
+  }
+
+  private connectToRemoteServer() {
+    if (this.socket) {
+      this.socket.close();
+    }
+    this.socket = socketIo(REMOTE_SERVER_URL);
+    this.socket.on("connect", _ => this.onConnect(REMOTE_SERVER_URL));
+  }
+
+
+  private requestLastSpieltag() {
+    this.socket.on("lastSpieltag", (data: string) => {
+      console.log(`sending last spieltag`);
+      this.updatedSpieltag.next(Spieltag.fromJSON(data));
     });
     this.socket.emit("lastSpieltag", "");
-    return result;
   }
 
 }

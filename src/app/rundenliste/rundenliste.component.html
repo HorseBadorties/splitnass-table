@@ -1,10 +1,9 @@
 <p-toolbar>
-  <div class="ui-toolbar-group-left">   
+  <div class="ui-toolbar-group-left">
     <p-button icon="pi pi-pencil" routerLink="/runde"></p-button>
     <span class="box"> </span>
     <span class="box"> </span>
     <span *ngIf="spieltag" class="white">{{getSpieltagInfo()}}</span>
-    <p-progressSpinner *ngIf="!spieltag" [style]="{width: '20px', height: '20px'}" ></p-progressSpinner>
   </div>
   <div class="ui-toolbar-group-right">
     <p-button icon="pi pi-ellipsis-v" (click)="displayMenu = true"></p-button>
@@ -13,46 +12,23 @@
 
 <div style="padding-top: 0.2em;"></div>
 
-<!-- <p-panel header="Spieltag vom {{formatDate(spieltag.beginn)}}" class="dd"> -->
-    <p-table [columns]="displayedColumns" [value]="spieltag.runden" [scrollable]="true" scrollHeight="300px"
-      selectionMode="single" [(selection)]="selectedRunde" *ngIf="spieltag">
-    <ng-template pTemplate="header" let-columns>
-      <tr class="p-table-row">
-        <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
-          {{col.header}}
-        </th>
-      </tr>
-    </ng-template>
+<p-progressSpinner *ngIf="!spieltag"></p-progressSpinner>
 
-    <ng-template pTemplate="body" let-runde let-columns="columns">
-      <tr #primerow class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
-        <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}"
-        (click)="rundeClicked(runde)">
-          {{getValueFor(runde, col.field)}}
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-<!-- </p-panel> -->
+<p-table *ngIf="spieltag" [columns]="displayedColumns" [value]="spieltag.runden" [scrollable]="true" scrollHeight="300px"
+  selectionMode="single" [(selection)]="selectedRunde">
+  <ng-template pTemplate="header" let-columns>
+    <tr class="p-table-row">
+      <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
 
-<!-- <div class="elevation" style="padding-top: 0.2em;">
-  <p-table [columns]="displayedColumns" [value]="spieltag.runden" [scrollable]="true" scrollHeight="200px" selectionMode="single"
-    [(selection)]="selectedRunde">
-    <ng-template pTemplate="header" let-columns>
-      <tr class="p-table-row">
-        <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
-          {{col.header}}
-        </th>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-runde let-columns="columns">
-      <tr #primerow class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
-        <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}"
-        (click)="rundeClicked(runde)">
-          {{getValueFor(runde, col.field)}}
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div> -->
+  <ng-template pTemplate="body" let-runde let-columns="columns">
+    <tr #primerow class="p-table-row" [pSelectableRow]="runde" [attr.nr]="runde.nr">
+      <td *ngFor="let col of columns; trackBy: getIndex" [ngStyle]="{'width': col.width}" (click)="rundeClicked(runde)">
+        {{getValueFor(runde, col.field)}}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

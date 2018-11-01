@@ -29,15 +29,16 @@ export class RundenlisteComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // this.spieltagService.getAktuellerSpieltag().subscribe(spieltag => this.setSpieltag(spieltag));
-    this.socketService.requestLastSpieltag().subscribe(spieltag => this.setSpieltag(spieltag));
-    this.socketService.onSpieltag().subscribe(spieltag => this.setSpieltag(spieltag));
+    this.socketService.updatedSpieltag.subscribe(spieltag => this.setSpieltag(spieltag));
   }
 
   private setSpieltag(spieltag: Spieltag) {
     this.spieltag = spieltag;
-    this.calcDisplayedColumns();
-    this.selectedRunde = spieltag.aktuelleRunde;
-    this.scrollToRunde(this.selectedRunde);
+    if (spieltag) {
+      this.calcDisplayedColumns();
+      this.selectedRunde = spieltag.aktuelleRunde;
+      this.scrollToRunde(this.selectedRunde);
+    }
   }
 
   ngAfterViewInit() {
