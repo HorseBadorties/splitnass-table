@@ -1,9 +1,11 @@
 import "jasmine";
-import { Runde, Gespielt, Ansage } from "../app/model/runde";
+import { Runde, Gespielt, Ansage } from "../model/runde";
+import { Spieltag } from "../model/spieltag";
 
-let runde = new Runde(1);
+const spieltag = new Spieltag();
+let runde = new Runde(spieltag, 1);
 
-beforeEach(() => runde = new Runde(1));
+beforeEach(() => runde = new Runde(spieltag, 1));
 
 describe("Runde berechnen", () => {
     it("Gespaltener Arsch bei gespielt = 0", () => {
