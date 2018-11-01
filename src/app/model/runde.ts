@@ -49,6 +49,13 @@ export class Runde {
     this.isGestartet = true;
   }
 
+  public beenden() {
+    if (!this.isGespielteRunde()) {
+      this.doBoecke();
+    }
+    this.isBeendet = true;
+  }
+
   public isAktuelleRunde() {
     return this.isGestartet && !this.isBeendet;
   }
@@ -65,9 +72,7 @@ export class Runde {
     }
   }
 
-  public berechneErgebnis() {
-    this.ergebnis = 0;
-    // Boecke
+  private doBoecke() {
     this.boecke = this.boeckeBeiBeginn;
     if (this.reAngesagt) {
       this.addBock();
@@ -81,9 +86,23 @@ export class Runde {
     if (this.reAngesagt && this.kontraAngesagt) {
       this.spieltag.boecke();
     }
+    if (this.ergebnis === 0) {
+      this.spieltag.boecke();
+    }
+  }
+
+  public berechneErgebnis() {
+    this.ergebnis = 0;
+    // Boecke
+    let _boecke = this.boeckeBeiBeginn;
+    if (this.reAngesagt) {
+      _boecke++;
+    }
+    if (this.kontraAngesagt) {
+      _boecke++;
+    }
     if (this.gespielt === 0) {
       // Gespaltener Arsch!?
-      this.spieltag.boecke();
       return this.ergebnis;
     }
     let gespieltePunkte = Math.abs(this.gespielt);
@@ -94,13 +113,11 @@ export class Runde {
     // Re un Kontra haben falsche Ansagen gemacht: gespaltener Arsch
     if (gespieltePunkte < this.reAngesagt && gespieltePunkte < this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this.spieltag.boecke();
       return this.ergebnis;
     }
     // nichts angesagt und keine 6 oder besser: gespaltener Arsch
     if (gespieltePunkte >= 3 && !this.reAngesagt && !this.kontraAngesagt && this.solo !== Solo.NULL) {
       this.ergebnis = 0;
-      this.spieltag.boecke();
       return this.ergebnis;
     }
     // Hat unter Berücksichtigung der Ansagen Re oder Kontra gewonnen?
@@ -165,11 +182,8 @@ export class Runde {
       this.reGewinnt = !this.reGewinnt;
     }
     // Böcke
-    if (this.boecke) {
-      this.ergebnis = this.boecke * 2 * this.ergebnis;
-    }
-    if (this.ergebnis === 0) {
-      this.spieltag.boecke();
+    if (_boecke) {
+      this.ergebnis = _boecke * 2 * this.ergebnis;
     }
     return this.ergebnis;
   }

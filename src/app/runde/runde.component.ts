@@ -265,6 +265,7 @@ export class RundeComponent implements OnInit, OnDestroy {
       }
     } else if (this.aktuelleRunde.isGespielteRunde()) {
       result.push(`Geber: ${this.aktuelleRunde.geber.name}`);
+      result.push(`Böcke: ${this.aktuelleRunde.boecke}`);
       result.push(`Ergebnis: ${this.aktuelleRunde.ergebnis}`);
       result.push(`Gewinner: ${this.getGewinner()}`);
     } else {
